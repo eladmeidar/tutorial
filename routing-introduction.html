@@ -1,0 +1,133 @@
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link href="files/style.css" media="screen" rel="stylesheet" type="text/css">
+    <link href="files/twilight.css" media="screen" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <div align="center">
+      <div id="flash" style="display: none;"></div>
+      <table id="everything" cellpadding="0" cellspacing="0" width="98%">
+        <tbody>
+          <tr>
+            <td id="left">&nbsp;</td>
+              <td class="content">
+                <img alt="Logo" id="logo" src="files/logo.jpg"><br><br><br><br><br>
+                <h1>How to create a Forum</h1> by Radar
+                <span id="fr"><a href="controllers.html">Controllers &raquo;</a></span>
+                <span id="fl"><a href="validations.html">&laquo; Validations</a></span>
+                <br><br>
+                <h2>Routing Introduction</h2>
+                <p>Now that we have our models, we can now define our routing. Routing
+                defines what URLs do what in your application and all of the
+                configuration is kept in one place: <em>config/routes.rb</em>.</p>
+
+                <p>This file will already have 2 lines in it already, along with around
+                30 commented out lines followed by two uncommented lines. The first two
+                lines after <span class="term">ActionController::Routing::Routes.draw do |map|</span> will look like:</p>
+
+                <p><b>Lines 2 &amp; 3 of config/routes.rb</b>
+                </p><pre class="twilight"><span class="line-numbers">   1 </span> map.<span class="Entity">resources</span> <span class="Constant"><span class="Constant">:</span>users</span>
+<span class="line-numbers">   2 </span> map.<span class="Entity">resource</span> <span class="Constant"><span class="Constant">:</span>session</span></pre><p></p>
+
+                <p>These two lines are defining the routes and methods for the users
+                and session controller and was written into our routes.rb from our
+                restful_authentication generator. The <span class="term">map.resource :session </span>
+                is flawed, as it's generated a SessionController but by default
+                map.resource :session goes to SessionsController, but restful
+                authentication generated SessionController (<em>app/controllers/session_controller.rb</em>) instead. To fix this, we'll suffix map.resource :session with the option of :controller =&gt; "session" so that it looks like:</p>
+
+<pre class="twilight"><span class="line-numbers">   1 </span> map.<span class="Entity">resources</span> <span class="Constant"><span class="Constant">:</span>session</span>, <span class="Constant"><span class="Constant">:</span>controller</span> =&gt; <span class="String"><span class="String">"</span>session<span class="String">"</span></span></pre><p></p>
+
+                <p>The next thirty lines are examples of how to use the routes file covering:
+                </p><ul>
+                <li>Regular routing</li>
+                <li>Named routing</li>
+                <li>Resource routing</li>
+                <li>Resource routing with options</li>
+                <li>Resource routing with sub resources</li>
+                <li>Resource routing within namespaces</li>
+                </ul><p></p>
+
+                <p>You can delete these lines if you like.</p>
+
+                <p>The final two lines define the final routes for our application.
+                These are the last resort routes and generally will not be called in
+                our application, but we'll leave them there for now, as they may come
+                in handy later on.</p>
+
+                <p>We're going to define some named routes in order to give us prettier URLs for when the user wants to login, signup or logout.</p>
+
+                <p><b>New lines in our routes.rb file, somewhere near the top.</b>
+                </p><pre class="twilight"><span class="line-numbers">   1 </span> map.<span class="Entity">connect</span> <span class="String"><span class="String">'</span>login<span class="String">'</span></span>, <span class="Constant"><span class="Constant">:</span>controller</span> =&gt; <span class="String"><span class="String">"</span>session<span class="String">"</span></span>, <span class="Constant"><span class="Constant">:</span>action</span> =&gt; <span class="String"><span class="String">"</span>new<span class="String">"</span></span>
+<span class="line-numbers">   2 </span> map.<span class="Entity">connect</span> <span class="String"><span class="String">'</span>signup<span class="String">'</span></span>, <span class="Constant"><span class="Constant">:</span>controller</span> =&gt; <span class="String"><span class="String">"</span>users<span class="String">"</span></span>, <span class="Constant"><span class="Constant">:</span>action</span> =&gt; <span class="String"><span class="String">"</span>new<span class="String">"</span></span>
+<span class="line-numbers">   3 </span> map.<span class="Entity">connect</span> <span class="String"><span class="String">'</span>logout<span class="String">'</span></span>, <span class="Constant"><span class="Constant">:</span>controller</span> =&gt; <span class="String"><span class="String">"</span>session<span class="String">"</span></span>, <span class="Constant"><span class="Constant">:</span>action</span> =&gt; <span class="String"><span class="String">"</span>destroy<span class="String">"</span></span>
+</pre><p></p>
+
+                <p>We're able to pass in methods on the map object that don't exist
+                thanks to the magic of method_missing. method_missing is the last
+                method to get called in the method chain when all else fails and this
+                can be overwritten, as it has been in this case. These three lines will
+                map /login, /signup and /logout to their respective controllers and
+                actions specified after the method call.</p>
+
+                <p>We're going to now define our resource routing. The way we do this is we call <span class="term">map.resources</span> and then pass in what we want to make a resource:</p>
+
+                <p><b>Underneath map.logout … in config/routes.rb</b>
+                </p><pre class="twilight"><span class="line-numbers">   1 </span> map.<span class="Entity">resources</span> <span class="Constant"><span class="Constant">:</span>forums</span></pre><p></p>
+
+                <p>This will give us access to using methods to generate URLs such as
+                /forums to go to our index action in our forums (forums_path)
+                controller, /forums/1 to go to the show action (forum_path([id or forum
+                object]) and /forums/1/edit to go to edit action (edit_forum_path([id
+                or forum object]).</p>
+
+                <p>This is all well and good, but we don't have our edit action located
+                at /forums/1/edit, we've put it into a namespaced controller so we
+                should also have a namespaced route to point to the correct location.
+                To do this we call <span class="term">map.namespace(:admin)</span> before calling <span class="term">#resources</span>, like this:</p>
+
+                <p><b>config/routes.rb</b>
+</p><pre class="twilight"><span class="line-numbers">   1 </span> map.<span class="Entity">namespace</span>(<span class="Constant"><span class="Constant">:</span>admin</span>) <span class="Keyword">do </span>|<span class="Variable">admin</span>|
+<span class="line-numbers">   2 </span> admin.<span class="Entity">resources</span> <span class="Constant"><span class="Constant">:</span>forums</span>
+<span class="line-numbers">   3 </span> <span class="Keyword">end</span></pre><p></p>
+
+                <p>What this has done is made routes exactly like the above, but it's
+                prefixed them with /admin/ so that we can now go to our namespaced
+                controllers rather than their non-namespaced counterparts.</p>
+
+                <p>Now to set up a default route ,often referred to as root, for people navigating to our domain we have to use a method called <span class="term">#root</span> on the map object, like this:</p>
+
+                <p><b>config/routes.rb</b>
+</p><pre class="twilight"><span class="line-numbers">   1 </span> map.<span class="Entity">root</span> <span class="Constant"><span class="Constant">:</span>controller</span> =&gt; <span class="String"><span class="String">"</span>forums<span class="String">"</span></span>, <span class="Constant"><span class="Constant">:</span>action</span> =&gt; <span class="String"><span class="String">"</span>index<span class="String">"</span></span>
+</pre><p></p>
+
+                <p>I feel this is better placed at the very top of our routes file,
+                because of how the routes file is processed. Rails will go through each
+                entry in the routes file until it finds one that matches what the URL
+                is, and then it will act on that. If our root route is at the top then
+                it will be matched first reducing the time it takes for the application
+                to process the home page, but only by a few milliseconds.</p>
+
+                <p>If you start your server now by opening a console window and typing <span class="term">mongrel_rails start</span>
+                in the application's root directory (also referred to as RAILS_ROOT).
+                This will start a single Mongrel server in development mode which will
+                serve our application for as long as it's running. Development mode
+                means it will reload all the code in the app/ folder every time a
+                request comes in, as compared to production in which it will load it
+                only once. Opening your browser, go to http://localhost:3000 and you'll
+                see the default <em>Ruby on Rails: Welcome aboard</em> screen. This is
+                just the index.html file located in the public folder. You can delete
+                this file and I recommend you do if you want to continue. Refreshing
+                the page will give you a nice big fat <em>Template is missing </em> error, which we're about to fix.
+                </p>
+                <br><br>
+
+                <span id="fr"><a href="controllers.html">Controllers &raquo;</a></span>
+                <span id="fl"><a href="validations.html">&laquo; Validations</a></span>
+            
+        </td><td id="right">&nbsp;</td></tr>
+        <tr><td colspan="3" id="bottom">&nbsp;</td></tr>
+      </tbody></table>
+    </div>
+  </body></html>

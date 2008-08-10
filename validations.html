@@ -1,0 +1,79 @@
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link href="files/style.css" media="screen" rel="stylesheet" type="text/css">
+    <link href="files/twilight.css" media="screen" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <div align="center">
+      <div id="flash" style="display: none;"></div>
+      <table id="everything" cellpadding="0" cellspacing="0" width="98%">
+        <tbody>
+          <tr>
+            <td id="left">&nbsp;</td>
+              <td class="content">
+                <img alt="Logo" id="logo" src="files/logo.jpg"><br><br><br><br><br>
+                <h1>How to create a Forum</h1> by Radar
+                <span id='fr'><a href="routing-introduction.html">Routing Introduction &raquo;</a></span>
+                <span id='fl'><a href="database--models.html">&laquo; Database &amp; Models</a></span>
+                <br><br>
+                <h2>Validations</h2>
+                <p>Now what if we don't want people entering blank data into our forms later on? Validations are the answer. We can validate the data before its entered into the database and provide error messages if something goes wrong.</p>
+
+                <p>Lets start with the Forum model. We'll have a form where people can enter a title and a description for their forum, and we want to make sure that they've entered both, and that the description is longer than four characters. For this we'll use <span class="term">validates_presence_of</span> and <span class="term">validates_length_of</span>.</p>
+
+                <p><strong class="code-title">app/models/forum.rb</strong>
+                <pre class="twilight"><span class="line-numbers">   1 </span> <span class="Keyword">class</span> <span class="Entity">Forum<span class="EntityInheritedClass"> <span class="EntityInheritedClass">&lt;</span> ActiveRecord::Base</span></span>
+<span class="line-numbers">   2 </span>   <span class="SupportFunction">has_many</span> <span class="Constant"><span class="Constant">:</span>topics</span>
+<span class="line-numbers">   3 </span>   <span class="SupportFunction">has_many</span> <span class="Constant"><span class="Constant">:</span>posts</span>, <span class="Constant"><span class="Constant">:</span>through</span> =&gt; <span class="Constant"><span class="Constant">:</span>topics</span>
+<span class="line-numbers">   4 </span>   <span class="SupportFunction">validates_presence_of</span> <span class="Constant"><span class="Constant">:</span>title</span>, <span class="Constant"><span class="Constant">:</span>description</span>
+<span class="line-numbers">   5 </span>   <span class="SupportFunction">validates_length_of</span> <span class="Constant"><span class="Constant">:</span>description</span>, <span class="Constant"><span class="Constant">:</span>minimum</span> =&gt; <span class="Constant">4</span>
+<span class="line-numbers">   6 </span> <span class="Keyword">end</span></pre></p>
+
+                <p>So we've simply called these two methods in our model and those validations will be checked when we go to save a forum object. We've passed two arguments to <span class="term">validates_presence_of</span>, and these can be passed as symbols or strings. We've also passed two arguments to <span class="term">validates_length_of</span>, the second of which is <span class="term">:minimum => 4</span> which tells the method that the length of description has to be at least 4 characters long. All validations take a very helpful option, <span class="term">:message</span>. With this option you can specify a message prefixed by the field name that failed the validation, like this:</p>
+
+                <p><strong class="code-title">app/models/forum.rb</strong>
+                <pre class="twilight"><span class="line-numbers">   1 </span> <span class="Keyword">class</span> <span class="Entity">Forum<span class="EntityInheritedClass"> <span class="EntityInheritedClass">&lt;</span> ActiveRecord::Base</span></span>
+<span class="line-numbers">   2 </span>   <span class="SupportFunction">has_many</span> <span class="Constant"><span class="Constant">:</span>topics</span>
+<span class="line-numbers">   3 </span>   <span class="SupportFunction">has_many</span> <span class="Constant"><span class="Constant">:</span>posts</span>, <span class="Constant"><span class="Constant">:</span>through</span> =&gt; <span class="Constant"><span class="Constant">:</span>topics</span>
+<span class="line-numbers">   4 </span>   <span class="SupportFunction">validates_presence_of</span> <span class="Constant"><span class="Constant">:</span>title</span>, <span class="Constant"><span class="Constant">:</span>description</span>, <span class="Constant"><span class="Constant">:</span>message</span> =&gt; <span class="String"><span class="String">&quot;</span>must not be blank, on penalty of defenestration!<span class="String">&quot;</span></span>
+<span class="line-numbers">   5 </span>   <span class="SupportFunction">validates_length_of</span> <span class="Constant"><span class="Constant">:</span>description</span>, <span class="Constant"><span class="Constant">:</span>minimum</span> =&gt; <span class="Constant">4</span>
+<span class="line-numbers">   6 </span> <span class="Keyword">end</span></pre></p>
+
+                <p>Moving on to our Topic model now, we need to make sure that a topic has a subject and it's not shorter than 4 characters long.</p>
+
+                <p><strong class="code-title">app/models/topic.rb</strong>
+                <pre class="twilight"><span class="line-numbers">   1 </span> <span class="Keyword">class</span> <span class="Entity">Topic<span class="EntityInheritedClass"> <span class="EntityInheritedClass">&lt;</span> ActiveRecord::Base</span></span>
+<span class="line-numbers">   2 </span>   <span class="SupportFunction">belongs_to</span> <span class="Constant"><span class="Constant">:</span>user</span>
+<span class="line-numbers">   3 </span>   <span class="SupportFunction">belongs_to</span> <span class="Constant"><span class="Constant">:</span>forum</span>
+<span class="line-numbers">   4 </span>   <span class="SupportFunction">has_many</span> <span class="Constant"><span class="Constant">:</span>posts</span>
+<span class="line-numbers">   5 </span>   <span class="SupportFunction">validates_presence_of</span> <span class="Constant"><span class="Constant">:</span>subject</span>
+<span class="line-numbers">   6 </span>   <span class="SupportFunction">validates_length_of</span> <span class="Constant"><span class="Constant">:</span>subject</span>, <span class="Constant"><span class="Constant">:</span>minimum</span> =&gt; <span class="Constant">4</span>
+<span class="line-numbers">   7 </span>   <span class="SupportFunction">validates_associated</span> <span class="Constant"><span class="Constant">:</span>posts</span>
+<span class="line-numbers">   8 </span> <span class="Keyword">end</span></pre></p>
+
+                <p>Validates associated makes sure all the related posts are valid before saving this topic object.</p>
+
+                <p>And the post model:</p>
+
+                <p><strong class="code-title">app/models/post.rb</strong>
+                <pre class="twilight"><span class="line-numbers">   1 </span> <span class="Keyword">class</span> <span class="Entity">Post<span class="EntityInheritedClass"> <span class="EntityInheritedClass">&lt;</span> ActiveRecord::Base</span></span>
+<span class="line-numbers">   2 </span>   <span class="SupportFunction">belongs_to</span> <span class="Constant"><span class="Constant">:</span>topic</span>
+<span class="line-numbers">   3 </span>   <span class="SupportFunction">belongs_to</span> <span class="Constant"><span class="Constant">:</span>user</span>
+<span class="line-numbers">   4 </span>   <span class="SupportFunction">validates_presence_of</span> <span class="Constant"><span class="Constant">:</span>text</span>
+<span class="line-numbers">   5 </span>   <span class="SupportFunction">validates_length_of</span> <span class="Constant"><span class="Constant">:</span>text</span>, <span class="Constant"><span class="Constant">:</span>minimum</span> =&gt; <span class="Constant">10</span>
+<span class="line-numbers">   6 </span> <span class="Keyword">end</span></pre></p>
+
+                <p>You can find more information about these and other validation methods at <a href="http://noobkit.com/show/ruby/rails/rails-stable/activerecord/activerecord/validations/classmethods">noobkit.com's validations page.</a></p>
+                <br><br>
+
+                <span id='fr'><a href="routing-introduction.html">Routing Introduction &raquo;</a></span>
+
+                <span id='fl'><a href="database--models.html">&laquo; Database &amp; Models</a></span>
+
+            
+        </td><td id="right">&nbsp;</td></tr>
+        <tr><td colspan="3" id="bottom">&nbsp;</td></tr>
+      </tbody></table>
+    </div>
+  </body></html>

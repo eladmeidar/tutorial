@@ -1,0 +1,327 @@
+body {
+  font:12pt Sans-serif, sans;
+  color:white;
+  background:url('/images/bg2.jpg') #2a2a2a;
+  margin:0px;
+}
+
+a {
+  color:#00a8ff;
+  text-decoration:none;
+}
+
+img {
+  border:0px;
+}
+
+#logo {
+  float:left;
+}
+
+#top {
+  background:url('/images/bg.jpg') repeat-x #2a2a2a;
+  height:100px;
+  position:absolute;
+  top:0px;
+  left:0px;
+  width:100%;
+  z-index:1;
+}
+
+#everything {
+  position:relative;
+  z-index:100;
+}
+
+.content { 
+  text-align:left;
+  background:#232323;
+  color:white;
+  height:100%;
+  padding:5px;
+  border:1px solid #2f2f2f;
+}
+
+
+#flash {
+  position:fixed;
+  bottom:0px;
+  left:0px;
+  width:100%;
+  padding:5px;
+  font-size:16pt;
+  font-weight:bold;
+  opacity: 0.9;
+  z-index:500;
+  background:url('/images/bg2.jpg') #2a2a2a;
+  border:1px solid #121212;
+}
+
+#left {
+  background:url('/images/left.jpg') repeat-y;
+  width:3px;
+  font-size:1pt;
+}
+
+#right {
+  background:url('/images/right.jpg') repeat-y;
+  width:3px;
+  font-size:1pt;
+}
+
+#bottom {
+  background:url('/images/bottom.jpg') repeat-x;
+  height:3px;
+  font-size:1pt;
+}
+
+#menu {
+  float:right;
+}
+
+#guide-menu {
+  float:right;
+}
+
+.upcoming-events {
+  position:absolute;
+  top:4.5em;
+  right:15%;
+  width:230px;
+  border-left:1px solid #343434;
+  text-align:center;
+  padding:10px;
+}
+.upcoming-events h2 {
+  font-size:16pt;
+}
+
+textarea, input {
+  font:13pt "Trebuchet MS";
+  padding:5px;
+  background:#212121;
+  border:1px solid #343434;
+  color:white;
+}
+
+h1, h2, h4 {
+  margin:0px;
+  padding:0px;
+}
+
+.blogs {
+  text-align:left;
+  float:left;
+  width: 70%;
+}
+.pagination {
+  text-align:center;
+}
+.blog-image-include {
+  float:right;
+  padding:2px;
+  margin:5px;
+  border:1px solid #292929;
+}
+#fl {
+  float:left;
+  padding-right:5px;
+}
+#fr {
+  float:right;
+}
+.comment-box { 
+  margin:2px;
+  border:1px solid #343434;
+  padding:3px;
+}
+#comment-change-links {
+  font-size:9pt;
+}
+.comment-number {
+  float:right;
+  font-size:20pt;
+  color:#343434;
+  font-weight:bold;
+}
+.code, .quote {
+  border:1px solid #1F1F1F;
+  color:white;
+  line-height:120%;
+  margin:5px;
+  padding:5px;
+}
+.code {
+  background:#262626;
+  font:12pt Monaco;
+  letter-spacing:-1px;
+}
+.command { 
+  font-family:Courier New,monospace;
+  letter-spacing:-1px;
+  padding:3px;
+}
+.quote {
+  width:90%;
+  letter-spacing:-0.5px;
+  background:#343434;
+}
+.quote .term {
+	background:#3f3f3f;
+}
+.code b, .quote b {
+  font-size:16pt;
+  font-family:sans, "Trebuchet MS";
+  font-style:normal;
+  padding:5px;
+}
+.code table {
+  margin:10px;
+}
+.term {
+  font-size:10pt;
+  font-family: Monaco, monospace;
+  background:#2a2a2a;
+  color:#0088ff;
+  letter-spacing:-1.25px;
+  padding:2px;
+  font-weight:bold;
+  line-height:150%;
+}
+.line-num {
+  padding:2px;
+  color:#565656;
+  padding-right:5px;
+  margin-left:3px;
+  font-weight:normal;
+  text-align:right;
+  border-right:1px solid #3a3a3a;
+}
+.line-num b {
+  font-size:10pt;
+  font-weight:bold;
+  color:#429acc;
+}
+.line {
+  padding:2px;
+  width:100%;
+  font-weight:bold;
+}
+.keyword {
+  color:#a2ff00;
+}
+.number {
+  color:#7b7b7b;
+}
+.ident {
+  color:#429acc;
+}
+.string {
+  color:#ff4c4c;
+}
+.class {
+  color:#cd85ff;
+}
+.method {
+  color:#ffc659;
+}
+.constant, .symbol {
+  color:#ffa800;
+}
+.attribute {
+  color:#ff4040;
+}
+.comment {
+  color:#8a8a8a;
+}
+#not-completed {
+  background:#dd0606;
+  border:1px solid white;
+  font-size:24pt;
+  font-weight:bold;
+  text-align:center;
+  margin:10px;
+  padding:10px;
+}
+
+/*Schedule Stuff*/
+.month {
+  border:3px solid #121212;
+}
+.schedule-link {
+  background:#171717;
+  border-bottom:1px solid #343434;
+}
+.dotw {
+  background:#1d1d1d;
+  border-bottom:2px solid #191919;
+  text-align:center;
+}
+.day, .blank, .today {
+  height:100px;
+  width:100px;
+  text-align:center;
+}
+.day {
+  border-bottom:1px solid #343434;
+  border-right:1px solid #343434;
+}
+.today {
+  background:#272727;
+  border-bottom:1px solid #313131;
+  border-right:1px solid #313131;
+}
+.today a {
+  font-size:24pt;
+  font-weight:bold;
+}
+.blank {
+  background:#191919;
+  color:#343434;
+  border-bottom:1px solid #292929;
+  border-right:1px solid #292929;
+}
+.year .month {
+  font-size:10pt;
+}
+.year .month .day {
+  width:20px;
+  height:20px;
+}
+.year .month .blank {
+  width:20px;
+  height:20px;
+}
+.year .month .today {
+  width:20px;
+  height:20px;
+  background:#333333;
+}
+.year .month .today a {
+  font-size:12pt;
+}
+.item-container {
+  margin-bottom:20px;
+}
+.item-container a {
+  font-size:8pt;
+}
+.item-container .big-link {
+  font-size:18pt;
+  font-weight:bold;
+}
+.item a {
+  font-size:12pt;
+}
+.item {
+  padding-left:20px;
+}
+.chronic {
+  background:#292929;
+  padding:5px;
+  font-family:monospace, "Courier New";
+  color:#ff9900;
+  font-weight:bold;
+  letter-spacing:-1px;
+}
+

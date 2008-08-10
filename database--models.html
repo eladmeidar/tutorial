@@ -1,0 +1,248 @@
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link href="files/style.css" media="screen" rel="stylesheet" type="text/css">
+    <link href="files/twilight.css" media="screen" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <div align="center">
+      <div id="flash" style="display: none;"></div>
+      <table id="everything" cellpadding="0" cellspacing="0" width="98%">
+        <tbody>
+          <tr>
+            <td id="left">&nbsp;</td>
+              <td class="content">
+                <img alt="Logo" id="logo" src="files/logo.jpg"><br><br><br><br><br>
+                <h1>How to create a Forum</h1> by Radar
+                <span id='fr'><a href="validations.html">Validations &raquo;</a></span>
+                <span id='fl'><a href="introduction.html">&laquo; Introduction</a></span>
+                <br><br>
+                <h2>Database &amp; Models</h2>
+                <p>As of Rails 2.0.2, it supports SQLite as the default database, and if you're using it you won't need to edit the database.yml file. If you're one of the brave souls using an alternative, you might want to edit your <span class="term">config/database.yml</span> to look like this:</p>
+
+                <p><strong class="code-title">config/database.yml</strong>
+                <pre class="twilight">
+<span class="line-numbers">   1 </span> <span class="MetaTagAll"><span class="MetaTagInline">development</span><span class="MetaTagAll">:</span></span>
+<span class="line-numbers">   2 </span>   <span class="String"><span class="MetaTagInline">username<span class="MetaTagInline">:</span></span> <span class="String">root</span></span>
+<span class="line-numbers">   3 </span>   <span class="String"><span class="MetaTagInline">password<span class="MetaTagInline">:</span></span> <span class="String">password</span></span>
+<span class="line-numbers">   4 </span>   <span class="String"><span class="MetaTagInline">database<span class="MetaTagInline">:</span></span> <span class="String">forum</span></span>
+<span class="line-numbers">   5 </span>   <span class="String"><span class="MetaTagInline">adapter<span class="MetaTagInline">:</span></span> <span class="String">mysql</span></span>
+<span class="line-numbers">   6 </span>   <span class="MetaTagAll"><span class="MetaTagInline">socket</span><span class="MetaTagAll">:</span> </span>/var/run/mysqld/mysqld.sock</pre>
+                with obviously 'root' and 'password' replaced with your actual username and password for MySQL.</p>
+
+                <p>Using SQLite means that it'll store the database along with the Rails application in the db folder as a file. Nobody else should have access to this file unless you specifically give them access to it, so it's secure also.</p>
+
+                <p>Let's get started by generating how our users are going to log in by using a plugin called restful_authentication. restful_authentication can be installed by typing <span class="term">script/plugin install  http://svn.techno-weenie.net/projects/plugins/restful_authentication/</span>. After doing this, type <span class="term">script/generate authenticated user session</span> to generate our first model (User) and controller (SessionController). This command will also generate our first migration named <em>001_create_users.rb</em> and stored in <em>db/migrate</em>, and which looks a little like this:</p>
+
+                <p><strong class="code-title">db/migrate/001_create_users.rb</strong>
+                <pre class="twilight">
+<span class="line-numbers">   1 </span> <span class="Keyword">class</span> <span class="Entity">CreateUsers<span class="EntityInheritedClass"> <span class="EntityInheritedClass">&lt;</span> ActiveRecord::Migration</span></span>
+<span class="line-numbers">   2 </span>   <span class="Keyword">def</span> <span class="Entity">self.up</span>
+<span class="line-numbers">   3 </span>     create_table <span class="String"><span class="String">&quot;</span>users<span class="String">&quot;</span></span>, <span class="Constant"><span class="Constant">:</span>force</span> =&gt; <span class="Constant">true</span> <span class="Keyword">do </span>|<span class="Variable">t</span>|
+<span class="line-numbers">   4 </span>       t.<span class="Entity">column</span> <span class="Constant"><span class="Constant">:</span>login</span>,                     <span class="Constant"><span class="Constant">:</span>string</span>
+<span class="line-numbers">   5 </span>       t.<span class="Entity">column</span> <span class="Constant"><span class="Constant">:</span>email</span>,                     <span class="Constant"><span class="Constant">:</span>string</span>
+<span class="line-numbers">   6 </span>       t.<span class="Entity">column</span> <span class="Constant"><span class="Constant">:</span>crypted_password</span>,          <span class="Constant"><span class="Constant">:</span>string</span>, <span class="Constant"><span class="Constant">:</span>limit</span> =&gt; <span class="Constant">40</span>
+<span class="line-numbers">   7 </span>       t.<span class="Entity">column</span> <span class="Constant"><span class="Constant">:</span>salt</span>,                      <span class="Constant"><span class="Constant">:</span>string</span>, <span class="Constant"><span class="Constant">:</span>limit</span> =&gt; <span class="Constant">40</span>
+<span class="line-numbers">   8 </span>       t.<span class="Entity">column</span> <span class="Constant"><span class="Constant">:</span>created_at</span>,                <span class="Constant"><span class="Constant">:</span>datetime</span>
+<span class="line-numbers">   9 </span>       t.<span class="Entity">column</span> <span class="Constant"><span class="Constant">:</span>updated_at</span>,                <span class="Constant"><span class="Constant">:</span>datetime</span>
+<span class="line-numbers">  10 </span>       t.<span class="Entity">column</span> <span class="Constant"><span class="Constant">:</span>remember_token</span>,            <span class="Constant"><span class="Constant">:</span>string</span>
+<span class="line-numbers">  11 </span>       t.<span class="Entity">column</span> <span class="Constant"><span class="Constant">:</span>remember_token_expires_at</span>, <span class="Constant"><span class="Constant">:</span>datetime</span>
+<span class="line-numbers">  12 </span>     <span class="Keyword">end</span>
+<span class="line-numbers">  13 </span>   <span class="Keyword">end</span>
+<span class="line-numbers">  14 </span> 
+<span class="line-numbers">  15 </span>   <span class="Keyword">def</span> <span class="Entity">self.down</span>
+<span class="line-numbers">  16 </span>     drop_table <span class="String"><span class="String">&quot;</span>users<span class="String">&quot;</span></span>
+<span class="line-numbers">  17 </span>   <span class="Keyword">end</span>
+<span class="line-numbers">  18 </span> <span class="Keyword">end</span>
+</pre></p>
+
+                <p>When we eventually run <span class="term">rake db:migrate</span> this file will be ran and it will create our users table. The self.up definition of the migration is the code that will be ran when we migrate up to this migration, and the self.down defintion is the code that will be ran when we migrate down.</p>
+
+                <p>The first line in the self.up definition is <span class="term">create_table "users", :force => true do |t|</span> which calls the create_table migration method, creating a table called users with a primary key field of id, and also a thing called a TableDefinition. The <span class="term">:force => true</span> after this will drop our table if it already exists and then the <span class="term">do |t|</span> opens up the block where we can specify what fields are in our table. The fields specified are added to our TableDefinition, and ultimately to our table once the migration is finished running.</p>
+
+                <p>This migration is very Rails 1.2.6 and the migration isn't very "sexy". Sexy Migrations were introduced into Rails 2.0, but they were originally created by the guys at <a href="http://errtheblog.com">errtheblog</a>. These are a DRYer (Don't Repeat Yourself) way of writing migrations and generally end up being much shorter and neater than their predecessors. For example, a sexy way of writing the up method for this migration would be:</p>
+
+                <p><strong class="code-title">db/migrate/001_create_users.rb, the self.up method</strong>
+                <pre class="twilight"><span class="line-numbers">   1 </span> <span class="Keyword">def</span> <span class="Entity">self.up</span>
+<span class="line-numbers">   2 </span>   create_table <span class="String"><span class="String">&quot;</span>users<span class="String">&quot;</span></span>, <span class="Constant"><span class="Constant">:</span>force</span> =&gt; <span class="Constant">true</span> <span class="Keyword">do </span>|<span class="Variable">t</span>|
+<span class="line-numbers">   3 </span>     t.<span class="Entity">string</span> <span class="Constant"><span class="Constant">:</span>login</span>, <span class="Constant"><span class="Constant">:</span>email</span>, <span class="Constant"><span class="Constant">:</span>remember_token</span>
+<span class="line-numbers">   4 </span>     t.<span class="Entity">string</span> <span class="Constant"><span class="Constant">:</span>crypted_password</span>, <span class="Constant"><span class="Constant">:</span>salt</span>, <span class="Constant"><span class="Constant">:</span>limit</span> =&gt; <span class="Constant">40</span>
+<span class="line-numbers">   5 </span>     t.<span class="Entity">timestamps</span>
+<span class="line-numbers">   6 </span>     t.<span class="Entity">datetime</span> <span class="Constant"><span class="Constant">:</span>remember_token_expires_at</span>
+<span class="line-numbers">   7 </span>   <span class="Keyword">end</span>
+<span class="line-numbers">   8 </span> <span class="Keyword">end</span></pre>
+                Now isn't that much sexier? Instead of calling #column on the TableDefinition, we now call the methods corresponding with the field types we want. In this example we've called <span class="term">#string</span>, <span class="term">#timestamps</span> and <span class="term">#datetime</span>. Now <span class="term">#string</span> and <span class="term">#datetime</span> are simple methods, these will define fields with VARCHAR (or whatever your database of choice uses) and DATETIME. You'll notice when we call <span class="term">#string</span>, it works just like :column, except we can specify multiple column names and then the options after them, <span class="term">:limit => 40</span> in this instance. <span class="term">#timestamps</span> is not so simple, it'll create two datetime fields called created_at and updated_at. These two fields will store the precise date and time that your record was created and updated, respectively.</p>
+
+                <p>Great, now that we've covered the nitty-gritty of ActiveRecord migrations, lets move right on to applying what we learnt into creating a new migration. Type <span class="term">script/generate model forum</span> in the console, or in the Projects view in netbeans right click on the Models folder and click generate, specifying forum as the name to begin. Note the singular version of the name, as it is defining a class of a Forum object. This'll generate four new files for us, the model (app/models/forum.rb), a unit test for it (test/unit/forum_test.rb), fixtures (test/fixtures/forums.yml) for the test and a migration (db/migrate/002_create_forums.rb). Firstly we'll take a peek in the migration:</p>
+
+                <p><strong class="code-title">db/migrate/002_create_forums.rb</strong>
+                <pre class="twilight"><span class="line-numbers">   1 </span> <span class="Keyword">class</span> <span class="Entity">CreateForums<span class="EntityInheritedClass"> <span class="EntityInheritedClass">&lt;</span> ActiveRecord::Migration</span></span>
+<span class="line-numbers">   2 </span>   <span class="Keyword">def</span> <span class="Entity">self.up</span>
+<span class="line-numbers">   3 </span>     create_table <span class="Constant"><span class="Constant">:</span>forums</span> <span class="Keyword">do </span>|<span class="Variable">t</span>|
+<span class="line-numbers">   4 </span>       t.<span class="Entity">timestamps</span>
+<span class="line-numbers">   5 </span>     <span class="Keyword">end</span>
+<span class="line-numbers">   6 </span>   <span class="Keyword">end</span>
+<span class="line-numbers">   7 </span> 
+<span class="line-numbers">   8 </span>   <span class="Keyword">def</span> <span class="Entity">self.down</span>
+<span class="line-numbers">   9 </span>     drop_table <span class="Constant"><span class="Constant">:</span>forums</span>
+<span class="line-numbers">  10 </span>   <span class="Keyword">end</span>
+<span class="line-numbers">  11 </span> <span class="Keyword">end</span></pre>
+                As you can see it's already got some information filled out for us. It'll create a table with three fields: created_at, updated_at and id when the migration is ran upwards, and it'll drop it when it is ran downwards. Let's add some fields to our migration so it now looks like this:</p>
+
+                <p><strong class="code-title">db/migrate/002_create_forums.rb</strong>
+<pre class="twilight"><span class="line-numbers">   1 </span> <span class="Keyword">class</span> <span class="Entity">CreateForums<span class="EntityInheritedClass"> <span class="EntityInheritedClass">&lt;</span> ActiveRecord::Migration</span></span>
+<span class="line-numbers">   2 </span>   <span class="Keyword">def</span> <span class="Entity">self.up</span>
+<span class="line-numbers">   3 </span>     create_table <span class="Constant"><span class="Constant">:</span>forums</span> <span class="Keyword">do </span>|<span class="Variable">t</span>|
+<span class="line-numbers">   4 </span>       t.<span class="Entity">string</span> <span class="Constant"><span class="Constant">:</span>title</span>
+<span class="line-numbers">   5 </span>       t.<span class="Entity">text</span> <span class="Constant"><span class="Constant">:</span>description</span>
+<span class="line-numbers">   6 </span>     <span class="Keyword">end</span>
+<span class="line-numbers">   7 </span>     
+<span class="line-numbers">   8 </span>     add_index <span class="Constant"><span class="Constant">:</span>forums</span>, <span class="Constant"><span class="Constant">:</span>title</span>
+<span class="line-numbers">   9 </span>   <span class="Keyword">end</span>
+<span class="line-numbers">  10 </span> 
+<span class="line-numbers">  11 </span>   <span class="Keyword">def</span> <span class="Entity">self.down</span>
+<span class="line-numbers">  12 </span>     drop_table <span class="Constant"><span class="Constant">:</span>forums</span>
+<span class="line-numbers">  13 </span>     remove_index <span class="Constant"><span class="Constant">:</span>forums</span>, <span class="Constant"><span class="Constant">:</span>title</span>
+<span class="line-numbers">  14 </span>   <span class="Keyword">end</span>
+<span class="line-numbers">  15 </span> <span class="Keyword">end</span>
+</pre>
+                Currently we only have need for the title and description fields in our forums table, so that's all we'll add in for now.
+                Running <span class="term">rake db:migrate</span> should make this migration run successfully and now we have a forums table in our database.</p>
+
+                <p>Next up is the topic model, and to get this we'll just run <span class="term">script/generate model topic</span> or click generate on the Models folder again. Now the relationship between a topic and a forum is that 1 forum has many topics, and therefore a topic must belong to a forum. We'll now define this relationship in our models:</p>
+
+                <p><strong class="code-title">app/models/forum.rb</strong>
+<pre class="twilight"><span class="line-numbers">   1 </span> <span class="Keyword">class</span> <span class="Entity">Forum<span class="EntityInheritedClass"> <span class="EntityInheritedClass">&lt;</span> ActiveRecord::Base</span></span>
+<span class="line-numbers">   2 </span>   <span class="SupportFunction">has_many</span> <span class="Constant"><span class="Constant">:</span>topics</span>
+<span class="line-numbers">   3 </span> <span class="Keyword">end</span></pre></p>
+
+                <p><strong class="code-title">app/models/topic.rb</strong>
+                <pre class="twilight"><span class="line-numbers">   1 </span> <span class="Keyword">class</span> <span class="Entity">Topic<span class="EntityInheritedClass"> <span class="EntityInheritedClass">&lt;</span> ActiveRecord::Base</span></span>
+<span class="line-numbers">   2 </span>   <span class="SupportFunction">belongs_to</span> <span class="Constant"><span class="Constant">:</span>forum</span>
+<span class="line-numbers">   3 </span>   <span class="SupportFunction">belongs_to</span> <span class="Constant"><span class="Constant">:</span>user</span>
+<span class="line-numbers">   4 </span> <span class="Keyword">end</span></pre></p>
+
+                <p><strong class="code-title">app/models/user.rb</strong>
+
+                <pre class="twilight"><span class="line-numbers">   1 </span> <span class="Keyword">class</span> <span class="Entity">User<span class="EntityInheritedClass"> <span class="EntityInheritedClass">&lt;</span> ActiveRecord::Base</span></span>
+<span class="line-numbers">   2 </span>   <span class="SupportFunction">has_many</span> <span class="Constant"><span class="Constant">:</span>topics</span>
+<span class="line-numbers">   3 </span> <span class="Comment">  <span class="Comment">#</span> insert all the stuff generated by restful authentication here</span>
+<span class="line-numbers">   4 </span> <span class="Keyword">end</span></pre></p>
+
+                <p>What we've done here is called <span class="term">#has_many</span> and <span class="term">#belongs_to</span> in our models, which gives us a whole swag of methods and helps us in regards to dealing with the relationship between objects of these classes. For instance, when I initialize a forum object as, say, @forum, to get all the topics for the forum I don't need to do <span class="term">SELECT * FROM `topics` WHERE `forum_id` = '#{@forum.id}'</span> as ActiveRecord will do this for us, we can just do <span class="term">@forum.topics</span>. Similarly, with a topic object we can just do <span class="term">@topic.forum</span> to find out which forum it belongs to. There's many more options that these methods give you, and some of them will be covered later on in the tutorial once we get to the controllers.</p>
+
+                <p>We'll define a custom method in our Topic model now for checking if a topic belongs to a user.</p>
+
+                <p><pre class="twilight"><span class="line-numbers">   1 </span> 
+<span class="line-numbers">   2 </span> <span class="Keyword">class</span> <span class="Entity">Topic<span class="EntityInheritedClass"> <span class="EntityInheritedClass">&lt;</span> ActiveRecord::Base</span></span>
+<span class="line-numbers">   3 </span>   <span class="SupportFunction">belongs_to</span> <span class="Constant"><span class="Constant">:</span>forum</span>
+<span class="line-numbers">   4 </span>   <span class="SupportFunction">belongs_to</span> <span class="Constant"><span class="Constant">:</span>user</span>
+<span class="line-numbers">   5 </span> 
+<span class="line-numbers">   6 </span>   <span class="Keyword">def</span> <span class="Entity">belongs_to?</span>(<span class="Variable">other_user</span>)
+<span class="line-numbers">   7 </span>     user <span class="Keyword">==</span> other_user
+<span class="line-numbers">   8 </span>   <span class="Keyword">end</span>
+<span class="line-numbers">   9 </span> <span class="Keyword">end</span></pre></p>
+
+                <p>This method will return true if the user owns that topic (indicated by the association) and false otherwise. This method will be helpful in the controller section later on.</p>
+
+                <p>Our topic migration now needs to be created. We're going to need a reference to the forum and user that this topic belongs to, a subject (string), timestamps (datetime), and a views counter (integer) which will make our migration look like this:</p>
+
+                <p><strong class="code-title">db/migrate/003_create_topics.rb</strong>
+                <pre class="twilight"><span class="line-numbers">   1 </span> <span class="Keyword">class</span> <span class="Entity">CreateTopics<span class="EntityInheritedClass"> <span class="EntityInheritedClass">&lt;</span> ActiveRecord::Migration</span></span>\
+<span class="line-numbers">   2 </span>   <span class="Keyword">def</span> <span class="Entity">self.up</span>
+<span class="line-numbers">   3 </span>     create_table <span class="Constant"><span class="Constant">:</span>topics</span> <span class="Keyword">do </span>|<span class="Variable">t</span>|
+<span class="line-numbers">   4 </span>       t.<span class="Entity">integer</span> <span class="Constant"><span class="Constant">:</span>views</span>
+<span class="line-numbers">   5 </span>       t.<span class="Entity">references</span> <span class="Constant"><span class="Constant">:</span>forum</span>, <span class="Constant"><span class="Constant">:</span>user</span>
+<span class="line-numbers">   6 </span>       t.<span class="Entity">string</span> <span class="Constant"><span class="Constant">:</span>subject</span>
+<span class="line-numbers">   7 </span>       t.<span class="Entity">timestamps</span>
+<span class="line-numbers">   8 </span>     <span class="Keyword">end</span>
+<span class="line-numbers">   9 </span>   <span class="Keyword">end</span>
+<span class="line-numbers">  10 </span> 
+<span class="line-numbers">  11 </span>   <span class="Keyword">def</span> <span class="Entity">self.down</span>
+<span class="line-numbers">  12 </span>     drop_table <span class="Constant"><span class="Constant">:</span>topics</span>
+<span class="line-numbers">  13 </span>   <span class="Keyword">end</span>
+<span class="line-numbers">  14 </span> <span class="Keyword">end</span></pre>
+                There's one new method in here, <span class='term'>references</span>. This will create two columns for us, forum_id and user_id. The reason why we use references instead of integer is because we don't have to type _id after every value.</p>
+
+                <p>Our final model and table will be our posts table, <span class="term">script/generate model post</span> or right click on the Models directory, click generate and specify post as the name. This will give us the model, migration, test and fixture file.  Our model should look like this:</p>
+
+                <p><strong class="code-title">app/models/post.rb</strong>
+                <pre class="twilight"><span class="line-numbers">   1 </span> <span class="Keyword">class</span> <span class="Entity">Post<span class="EntityInheritedClass"> <span class="EntityInheritedClass">&lt;</span> ActiveRecord::Base</span></span>
+<span class="line-numbers">   2 </span>   <span class="SupportFunction">belongs_to</span> <span class="Constant"><span class="Constant">:</span>user</span>
+<span class="line-numbers">   3 </span>   <span class="SupportFunction">belongs_to</span> <span class="Constant"><span class="Constant">:</span>topic</span>
+<span class="line-numbers">   4 </span> 
+<span class="line-numbers">   5 </span>   <span class="Keyword">def</span> <span class="Entity">belongs_to?</span>(<span class="Variable">other_user</span>)
+<span class="line-numbers">   6 </span>     user <span class="Keyword">==</span> other_user
+<span class="line-numbers">   7 </span>   <span class="Keyword">end</span>
+<span class="line-numbers">   8 </span> <span class="Keyword">end</span></pre></p>
+
+                <p>We've added the <span class='term'>#belongs_to?</span> here because we want to check the ownership of posts too.</p>
+
+                <p>Let's not forget our final migration, the one that's going to create our posts table.</p>
+
+                <p><strong class="code-title">db/migrate/004_create_posts.rb</strong>
+                <pre class="twilight"><span class="line-numbers">   1 </span> <span class="Keyword">class</span> <span class="Entity">CreatePosts<span class="EntityInheritedClass"> <span class="EntityInheritedClass">&lt;</span> ActiveRecord::Migration</span></span>
+<span class="line-numbers">   2 </span>   <span class="Keyword">def</span> <span class="Entity">self.up</span>
+<span class="line-numbers">   3 </span>     create_table <span class="Constant"><span class="Constant">:</span>posts</span> <span class="Keyword">do </span>|<span class="Variable">t</span>|
+<span class="line-numbers">   4 </span>       t.<span class="Entity">text</span> <span class="Constant"><span class="Constant">:</span>text</span>
+<span class="line-numbers">   5 </span>       t.<span class="Entity">references</span> <span class="Constant"><span class="Constant">:</span>topic</span>, <span class="Constant"><span class="Constant">:</span>user</span>
+<span class="line-numbers">   6 </span>       t.<span class="Entity">timestamps</span>
+<span class="line-numbers">   7 </span>     <span class="Keyword">end</span>
+<span class="line-numbers">   8 </span>   <span class="Keyword">end</span>
+<span class="line-numbers">   9 </span> 
+<span class="line-numbers">  10 </span>   <span class="Keyword">def</span> <span class="Entity">self.down</span>
+<span class="line-numbers">  11 </span>     drop_table <span class="Constant"><span class="Constant">:</span>posts</span>
+<span class="line-numbers">  12 </span>   <span class="Keyword">end</span>
+<span class="line-numbers">  13 </span> <span class="Keyword">end</span></pre></p>
+
+                <p>Run <span class="term">rake db:migrate</span> and we'll have our new posts table.</p>
+
+                <p>We'll need to had a <span class="term">has_many :posts</span> to our Topic and User models, and a <span class="term">has_many :posts, :through => :topics</span> in our forum model. Now we've already covered <span class="term">#has_many</span> with just one option, the association name. In our forum model we've specified it with an additional option, and that is <span class="term">:through => :topics</span>. This will gather up all the posts related to all the topics that belong to our forum for us. The catch here is that you won't be able to get all the users that have posted on a forum by doing <span class="term">has_many :users, :through => :posts</span>, as this will generate a query that will look on the posts table for the related forum_id, and then find all the users on it and throw this error:</p>
+
+                <p><b class='code-title'>Evil SQL Error</b>
+                <pre class="twilight"><span class="line-numbers">   1 </span> ActiveRecord::StatementInvalid: Mysql::Error: #42S22Unknown column 'posts.forum_id' in 'where clause':
+<span class="line-numbers">   2 </span> SELECT users.* FROM users  INNER JOIN posts ON users.id = posts.user_id    WHERE ((posts.forum_id = 1))</pre></p>
+
+                <p>So four level has_many relationships are a big no-no, ok? Great! There is no logical reason why a model four "jumps" away from another model should depend on that other model.</p>
+
+                <p>So, just a recap, by now our forum model should has_many :topics and has_many :posts, with the posts association going :through => :topics. The topic model should has_many :posts, belongs_to :user and belongs_to :forum. The post model should belongs_to :user and belongs_to :topic. Finally, the user model should has_many :topics and has_many :posts. It should make the whole model situation look like this:</p>
+
+                <p><strong class="code-title">app/models/forum.rb</strong>
+                <pre class="twilight"><span class="line-numbers">   1 </span> <span class="Keyword">class</span> <span class="Entity">Forum<span class="EntityInheritedClass"> <span class="EntityInheritedClass">&lt;</span> ActiveRecord::Base</span></span>
+<span class="line-numbers">   2 </span>   <span class="SupportFunction">has_many</span> <span class="Constant"><span class="Constant">:</span>topics</span>
+<span class="line-numbers">   3 </span>   <span class="SupportFunction">has_many</span> <span class="Constant"><span class="Constant">:</span>posts</span>, <span class="Constant"><span class="Constant">:</span>through</span> =&gt; <span class="Constant"><span class="Constant">:</span>topics</span>
+<span class="line-numbers">   4 </span> <span class="Keyword">end</span></pre></p>
+
+                <p><strong class="code-title">app/models/topic.rb</strong>
+<pre class="twilight"><span class="line-numbers">   1 </span> <span class="Keyword">class</span> <span class="Entity">Topic<span class="EntityInheritedClass"> <span class="EntityInheritedClass">&lt;</span> ActiveRecord::Base</span></span>
+<span class="line-numbers">   2 </span>   <span class="SupportFunction">belongs_to</span> <span class="Constant"><span class="Constant">:</span>forum</span>
+<span class="line-numbers">   3 </span>   <span class="SupportFunction">belongs_to</span> <span class="Constant"><span class="Constant">:</span>user</span>
+<span class="line-numbers">   4 </span>   <span class="SupportFunction">has_many</span> <span class="Constant"><span class="Constant">:</span>posts</span>
+<span class="line-numbers">   5 </span> <span class="Keyword">end</span></pre></p>
+
+                <p><strong class="code-title">app/models/post.rb</strong>
+<pre class="twilight"><span class="line-numbers">   1 </span> <span class="Keyword">class</span> <span class="Entity">Post<span class="EntityInheritedClass"> <span class="EntityInheritedClass">&lt;</span> ActiveRecord::Base</span></span>
+<span class="line-numbers">   2 </span>   <span class="SupportFunction">belongs_to</span> <span class="Constant"><span class="Constant">:</span>topic</span>
+<span class="line-numbers">   3 </span>   <span class="SupportFunction">belongs_to</span> <span class="Constant"><span class="Constant">:</span>user</span>
+<span class="line-numbers">   4 </span> <span class="Keyword">end</span></pre></p>
+
+                <p><strong class="code-title">app/models/user.rb</strong>
+
+<pre class="twilight"><span class="line-numbers">   1 </span> <span class="Keyword">class</span> <span class="Entity">User<span class="EntityInheritedClass"> <span class="EntityInheritedClass">&lt;</span> ActiveRecord::Base</span></span>
+<span class="line-numbers">   2 </span>   <span class="SupportFunction">has_many</span> <span class="Constant"><span class="Constant">:</span>topics</span>
+<span class="line-numbers">   3 </span>   <span class="SupportFunction">has_many</span> <span class="Constant"><span class="Constant">:</span>posts</span>
+<span class="line-numbers">   4 </span> <span class="Comment"><span class="Comment">#</span> insert all the stuff generated by restful authentication here</span>
+<span class="line-numbers">   5 </span> <span class="Keyword">end</span></pre></p>
+
+                <p>Onwards!</p>
+                <br><br>
+
+                <span id='fr'><a href="validations.html">Validations &raquo;</a></span>
+                <span id='fl'><a href="introduction.html">&laquo; Introduction</a></span>
+                
+            
+        </td><td id="right">&nbsp;</td></tr>
+        <tr><td colspan="3" id="bottom">&nbsp;</td></tr>
+      </tbody></table>
+    </div>
+  </body></html>
