@@ -1,0 +1,58 @@
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link href="files/style.css" media="screen" rel="stylesheet" type="text/css">
+    <link href="files/twilight.css" media="screen" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <div align="center">
+      <div id="flash" style="display: none;"></div>
+      <table id="everything" cellpadding="0" cellspacing="0" width="98%">
+        <tbody>
+          <tr>
+            <td id="left">&nbsp;</td>
+              <td class="content">
+                <img alt="Logo" id="logo" src="files/logo.jpg"><br><br><br><br><br>
+                <span id="fr"><a href="models.html">Models »</a></span>
+<span id="fl"><a href="index.html">« Introduction</a></span>
+<br><br>
+<h2>Database</h2>
+<p>As of Rails 2.0.2, Rails supports SQLite as the default database,
+and if you're using SQLite you won't need to edit the database.yml
+file. If you're one of the brave souls using an alternative, you might
+want to edit your <span class="term">config/database.yml</span> to look like this:</p>
+
+<p><strong class="code-title">config/database.yml</strong>
+</p><pre class="twilight"><span class="line-numbers">   1 </span> <span class="MetaTagAll"><span class="MetaTagInline">development</span><span class="MetaTagAll">:</span></span>
+<span class="line-numbers">   2 </span>   <span class="String"><span class="MetaTagInline">username<span class="MetaTagInline">:</span></span> <span class="String">root</span></span>
+<span class="line-numbers">   3 </span>   <span class="String"><span class="MetaTagInline">password<span class="MetaTagInline">:</span></span> <span class="String">password</span></span>
+<span class="line-numbers">   4 </span>   <span class="String"><span class="MetaTagInline">database<span class="MetaTagInline">:</span></span> <span class="String">forum</span></span>
+<span class="line-numbers">   5 </span>   <span class="String"><span class="MetaTagInline">adapter<span class="MetaTagInline">:</span></span> <span class="String">mysql</span></span>
+<span class="line-numbers">   6 </span>   <span class="MetaTagAll"><span class="MetaTagInline">socket</span><span class="MetaTagAll">:</span> </span>/var/run/mysqld/mysqld.sock
+<span class="line-numbers">   7 </span> 
+<span class="line-numbers">   8 </span> <span class="MetaTagAll"><span class="MetaTagInline">test</span><span class="MetaTagAll">:</span></span>
+<span class="line-numbers">   9 </span>   <span class="String"><span class="MetaTagInline">adapter<span class="MetaTagInline">:</span></span> <span class="String">sqlite</span></span>
+<span class="line-numbers">  10 </span>   <span class="String"><span class="MetaTagInline">database<span class="MetaTagInline">:</span></span> <span class="String">db/test.sqlite3</span></span>
+</pre><p></p>
+
+<p>This file is written in a format known as YAML (Yet Another Markup
+Language) and works similarly to Ruby hashes, with the key coming first
+and then the value after the <span class="term">:</span>. In fact if you were to use the `</p>
+
+<p>with obviously 'root' and 'password' replaced with your actual
+username and password for MySQL. Postgres users will need to specify <span class="term">postgresql</span> as their adapter, and <em>/tmp/pgsql.5432</em> as their socket. Windows users do not need to specify a socket for either.</p>
+
+<p>Using SQLite means that it'll store the database along with the
+Rails application in the db folder as a file. Nobody else should have
+access to this file unless you specifically give them access to it, so
+it's secure also.</p>
+<br><br>
+
+<span id="fr"><a href="models.html">Models »</a></span>
+<span id="fl"><a href="index.html">« Introduction</a></span>
+
+</td><td id="right">&nbsp;</td></tr>
+<tr><td colspan="3" id="bottom">&nbsp;</td></tr>
+</tbody></table>
+</div>
+</body></html>

@@ -14,8 +14,8 @@
 <td class="content">
 <img alt="Logo" id="logo" src="files/logo.jpg"><br><br><br><br><br>
 <h1>How to create a Forum</h1> by Radar
-<span id="fr"><a href="http://localhost:3000/guides/how-to-create-a-forum/pages/views">Views »</a></span>
-<span id="fl"><a href="http://localhost:3000/guides/how-to-create-a-forum/pages/routing-introduction">« Routing Introduction</a></span>
+<span id="fr"><a href="views.html">Views »</a></span>
+<span id="fl"><a href="routing-introduction.html">« Routing Introduction</a></span>
 <br><br>
 <h2>Controllers</h2>
 <p>Controllers are what are accessed first when a user goes to our
@@ -45,13 +45,13 @@ there is a need for it. The actions are as follows:</p>
 
 <p></p><h3>The Seven</h3>
 <ul>
-<li><b>index [GET]</b>: Where we initialise the variable containing all our forums that we want to display on the main page.</li>
-<li><b>show [GET]</b>: Where we initialize a single forum object as a variable and used for viewing a single forum.</li>
-<li><b>new [GET]</b>: Provides an interface for creating a new forum, sends its form data to the create action.</li>
-<li><b>create [POST]</b>: Parses the form data from the new action, creating a new forum.</li>
-<li><b>edit [GET]</b>: Provides an interface for editing an existing forum, sends its form data to the update action.</li>
-<li><b>update [PUT]</b>: Parses the form data provided from the update action </li>
-<li><b>destroy [DELETE]</b>: A place to delete an existing forum.</li>
+  <li><b>index [GET]</b>: Action for showing a list or lists of the objects in our table</li>
+  <li><b>show [GET]</b>: Action for showing a single record from our table</li>
+  <li><b>new [GET]</b>: Action for initializing new objects</li>
+  <li><b>create [POST]</b>: Action for adding new objects to the table</li>
+  <li><b>edit [GET]</b>: Action for retrieving an object in order to modify it</li>
+  <li><b>update [PUT]</b>: Action for updating an object</li>
+  <li><b>destroy [DELETE]</b>: Action for deleting an object</li>
 </ul><p></p>
 
 <p>The words in square brackets next to our action name are the HTTP
@@ -377,7 +377,7 @@ on it which will return true or false depending on if the topic is
 valid or not. This action will redirect to the relevant topic.</p>
 
 <p></p><div align="center">
-<div class="quote"> There's been all this
+  <div class="quote"> There's been all this
 talk in this section about things being valid. So how do you check if
 an object is valid, without actually saving it? You can call the <span class="term">#valid?</span>
 method on it which, like save, will return true or false depending on
@@ -449,17 +449,17 @@ posts and remove existing posts. It looks a little like this:</p>
 <span class="line-numbers">  46 </span>     <span class="Variable"><span class="Variable">@</span>post</span>.<span class="Entity">destroy</span>
 <span class="line-numbers">  47 </span>     flash[<span class="Constant"><span class="Constant">:</span>notice</span>] <span class="Keyword">=</span> <span class="String"><span class="String">"</span>The selected post has been deleted.<span class="String">"</span></span>
 <span class="line-numbers">  48 </span>   <span class="Keyword">end</span>
-<span class="line-numbers">  49 </span> <span class="Keyword">end</span>
-<span class="line-numbers">  50 </span> 
-<span class="line-numbers">  51 </span> <span class="Keyword">private</span>
-<span class="line-numbers">  52 </span>   <span class="Keyword">def</span> <span class="Entity">not_found</span>
-<span class="line-numbers">  53 </span>     flash[<span class="Constant"><span class="Constant">:</span>error</span>] <span class="Keyword">=</span> <span class="String"><span class="String">"</span>The post you were looking for could not be found.<span class="String">"</span></span>
-<span class="line-numbers">  54 </span>     <span class="SupportFunction">redirect_to</span> <span class="Entity">topic_path</span>(<span class="Variable"><span class="Variable">@</span>topic</span>)
-<span class="line-numbers">  55 </span>   <span class="Keyword">end</span>
-<span class="line-numbers">  56 </span> 
-<span class="line-numbers">  57 </span>   <span class="Keyword">def</span> <span class="Entity">find_topic</span>
-<span class="line-numbers">  58 </span>     <span class="Variable"><span class="Variable">@</span>topic</span> <span class="Keyword">=</span> <span class="Support">Topic</span>.<span class="Entity">find</span>(params[<span class="Constant"><span class="Constant">:</span>topic_id</span>])
-<span class="line-numbers">  59 </span>   <span class="Keyword">end</span>
+<span class="line-numbers">  49 </span> 
+<span class="line-numbers">  50 </span>   <span class="Keyword">private</span>
+<span class="line-numbers">  51 </span>     <span class="Keyword">def</span> <span class="Entity">not_found</span>
+<span class="line-numbers">  52 </span>       flash[<span class="Constant"><span class="Constant">:</span>error</span>] <span class="Keyword">=</span> <span class="String"><span class="String">"</span>The post you were looking for could not be found.<span class="String">"</span></span>
+<span class="line-numbers">  53 </span>       <span class="SupportFunction">redirect_to</span> <span class="Entity">topic_path</span>(<span class="Variable"><span class="Variable">@</span>topic</span>)
+<span class="line-numbers">  54 </span>     <span class="Keyword">end</span>
+<span class="line-numbers">  55 </span> 
+<span class="line-numbers">  56 </span>     <span class="Keyword">def</span> <span class="Entity">find_topic</span>
+<span class="line-numbers">  57 </span>       <span class="Variable"><span class="Variable">@</span>topic</span> <span class="Keyword">=</span> <span class="Support">Topic</span>.<span class="Entity">find</span>(params[<span class="Constant"><span class="Constant">:</span>topic_id</span>])
+<span class="line-numbers">  58 </span>     <span class="Keyword">end</span>
+<span class="line-numbers">  59 </span> <span class="Keyword">end</span>
 </pre><p></p>
 
 <p>A few cool things in here are that we call <span class="term">render :action =&gt; "not_found"</span> rather than calling the <span class="term">not found</span> method itself. You'll find out why we did this in the view page. Another cool thing is we have a <span class="term">respond_to</span> block in the show action, which will render either <em>app/views/posts/show.html.erb</em> or <em>app/views/posts/show.js.erb</em>
@@ -473,10 +473,9 @@ render the js version.</p>
 <p></p>
 <br><br>
 
-<a href="http://localhost:3000/guides/how-to-create-a-forum/pages/5/edit">Edit Page</a>
 
-<span id="fr"><a href="http://localhost:3000/guides/how-to-create-a-forum/pages/views">Views »</a></span>
-<span id="fl"><a href="http://localhost:3000/guides/how-to-create-a-forum/pages/routing-introduction">« Routing Introduction</a></span>
+<span id="fr"><a href="views.html">Views »</a></span>
+<span id="fl"><a href="routing-introduction.html">« Routing Introduction</a></span>
 
 </td>
 <td id="right">&nbsp;</td>
