@@ -1,50 +1,82 @@
 <html>
-  <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <link href="files/style.css" media="screen" rel="stylesheet" type="text/css">
-    <link href="files/twilight.css" media="screen" rel="stylesheet" type="text/css">
-  </head>
-  <body>
-    <div align="center">
-      <div id="flash" style="display: none;"></div>
-      <table id="everything" cellpadding="0" cellspacing="0" width="98%">
-        <tbody>
-          <tr>
-            <td id="left">&nbsp;</td>
-              <td class="content">
-                <img alt="Logo" id="logo" src="files/logo.jpg"><br><br><br><br><br>
-                <h1>How to create a Forum</h1> by Radar
-                <span id='fr'><a href="view-introduction.html">View Introduction &raquo;</a></span>
-                <span id='fl'><a href="routing-introduction.html">&laquo; Routing Introduction</a></span>
-                <br><br>
-                <h2>Controllers</h2>
-                <p>Controllers are what are accessed first when a user goes to our site. These are instructions for the application and are somewhat of a staging area for the output, or the view, of the site. In our controller we call methods on our model classes in order to collect data to present in the view.</p>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<link href="files/style.css" media="screen" rel="stylesheet" type="text/css">
+<link href="files/twilight.css" media="screen" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div align="center">
+<div id="flash" style="display: none;"></div>
+<table id="everything" cellpadding="0" cellspacing="0" width="98%">
+<tbody>
+<tr>
+<td id="left">&nbsp;</td>
+<td class="content">
+<img alt="Logo" id="logo" src="files/logo.jpg"><br><br><br><br><br>
+<h1>How to create a Forum</h1> by Radar
+<span id="fr"><a href="http://localhost:3000/guides/how-to-create-a-forum/pages/views">Views »</a></span>
+<span id="fl"><a href="http://localhost:3000/guides/how-to-create-a-forum/pages/routing-introduction">« Routing Introduction</a></span>
+<br><br>
+<h2>Controllers</h2>
+<p>Controllers are what are accessed first when a user goes to our
+site. These are instructions for the application and are somewhat of a
+staging area for the output, or the view, of the site. In our
+controller we call methods on our model classes in order to collect
+data to present in the view.</p>
 
-                <p>We already have two controllers generated for us, SessionController and UsersController, and these deal with the registration, logging in and logging out of users on our site. We're not going to touch these. Instead, we're going to generate our own controller called ForumsController. To do this, we use the <span class='term'>script/generate</span> command like we did to create the models: <span class='term'>script/generate controller forums index show</span>. Using this command we've generated the forums controller (note that the controller name is pluralized, where the model is singular) and two actions within it, index and show. We could've used script/generate resource to generate everything for us, but I feel this adds more cruft than what we're interested in for this guide.</p>
+<p>We already have two controllers generated for us, SessionController
+and UsersController, and these deal with the registration, logging in
+and logging out of users on our site. We're not going to touch these.
+Instead, we're going to generate our own controller called
+ForumsController. To do this, we use the <span class="term">script/generate</span> command like we did to create the models: <span class="term">script/generate controller forums index show</span>.
+Using this command we've generated the forums controller (note that the
+controller name is pluralized, where the model is singular) and two
+actions within it, index and show. We could've used script/generate
+resource to generate everything for us, but I feel this adds more cruft
+than what we're interested in for this guide.</p>
 
-                <p>The way this command has been called is that we specified what we wanted generated, a controller, and then the name   of the controller, which is always pluralized for restful controllers, and then the two actions after it. These two actions are from the seven restful actions which are the base for restful routing, but don't necessarily need to be the only seven actions in your controller and you may add more if there is a need for it. The actions are as follows:</p>
+<p>The way this command has been called is that we specified what we
+wanted generated, a controller, and then the name of the controller,
+which is always pluralized for restful controllers, and then the two
+actions after it. These two actions are from the seven restful actions
+which are the base for restful routing, but don't necessarily need to
+be the only seven actions in your controller and you may add more if
+there is a need for it. The actions are as follows:</p>
 
-                <p><h3>The Seven</h3>
-                <ul>
-                  <li><b>index [GET]</b>: Where we initialise the variable containing all our forums that we want to display on the main page.</li>
+<p></p><h3>The Seven</h3>
+<ul>
+<li><b>index [GET]</b>: Where we initialise the variable containing all our forums that we want to display on the main page.</li>
+<li><b>show [GET]</b>: Where we initialize a single forum object as a variable and used for viewing a single forum.</li>
+<li><b>new [GET]</b>: Provides an interface for creating a new forum, sends its form data to the create action.</li>
+<li><b>create [POST]</b>: Parses the form data from the new action, creating a new forum.</li>
+<li><b>edit [GET]</b>: Provides an interface for editing an existing forum, sends its form data to the update action.</li>
+<li><b>update [PUT]</b>: Parses the form data provided from the update action </li>
+<li><b>destroy [DELETE]</b>: A place to delete an existing forum.</li>
+</ul><p></p>
 
-                  <li><b>show [GET]</b>: Where we initialize a single forum object as a variable and used for viewing a single forum.</li>
-                  <li><b>new [GET]</b>: Provides an interface for creating a new forum, sends its form data to the create action.</li>
-                  <li><b>create [POST]</b>: Parses the form data from the new action, creating a new forum.</li>
-                  <li><b>edit [GET]</b>: Provides an interface for editing an existing forum, sends its form data to the update action.</li>
-                  <li><b>update [PUT]</b>: Parses the form data provided from the update action </li>
+<p>The words in square brackets next to our action name are the HTTP
+methods that are used when we're accessing those actions. Usually HTTP
+has two methods, GET and POST. Rails has added two more, PUT and
+DELETE. PUT is used when you're updating an object, such as the update
+action and DELETE is used when you want to delete an object, like in
+the destroy action.</p>
 
-                  <li><b>destroy [DELETE]</b>: A place to delete an existing forum.</li>
-                </ul></p>
+<p>The reason why we haven't put the last 5 actions in that list in our
+forums controller is because the forums controller we've just generated
+is for the users of our site only. For the administrative actions we're
+going to generate another controller which will deal with these last
+five actions. To do this, type <span class="term">script/generate controller admin/forums new create edit update destroy</span>.
+The admin/ prefix to our forums name, means that we want this
+controller to be namespaced. This command will create a new folder
+called <em>admin</em> in <em>app/controllers</em> in which it will place another <em>forums_controller.rb</em>. If you look in this file you'll see that the class is actually <span class="term">Admin::ForumsController</span>, showing that it is namespaced, where in the one in the root controllers directory is just ForumsController.</p>
 
-                <p>The words in square brackets next to our action name are the HTTP methods that are used when we're accessing those actions. Usually HTTP has two methods, GET and POST. Rails has added two more, PUT and DELETE. PUT is used when you're updating an object, such as the update action and DELETE is used when you want to delete an object, like in the destroy action.</p>
+<p>We'll now define the code within our ForumsController. Open up the
+projects view in Netbeans (by default it's the window in the top left
+and already opened) by clicking on Window and then Projects, or
+pressing [shortcut key]. Open up your project folder, <em>forum</em>, and then click on Controllers and double click on the <em>forums_controller.rb</em> file within it. This will open up a file that looks like this:</p>
 
-                <p>The reason why we haven't put the last 5 actions in that list in our forums controller is because the forums controller we've just generated is for the users of our site only. For the administrative actions we're going to generate another controller which will deal with these last five actions. To do this, type <span class='term'>script/generate controller admin/forums new create edit update destroy</span>. The admin/ prefix to our forums name, means that we want this controller to be namespaced. This command will create a new folder called <em>admin</em> in <em>app/controllers</em> in which it will place another <em>forums_controller.rb</em>. If you look in this file you'll see that the class is actually <span class='term'>Admin::ForumsController</span>, showing that it is namespaced, where in the one in the root controllers directory is just ForumsController.</p>
-
-                <p>We'll now define the code within our ForumsController. Open up the projects view in Netbeans (by default it's the window in the top left and already opened) by clicking on Window and then Projects, or pressing [shortcut key]. Open up your project folder, <em>forum</em>, and then click on Controllers and double click on the <em>forums_controller.rb</em> file within it. This will open up a file that looks like this:</p>
-
-                <p><b>app/controllers/forums_controller.rb</b>
-                <pre class="twilight"><span class="line-numbers">   1 </span> <span class="Keyword">class</span> <span class="Entity">ForumsController<span class="EntityInheritedClass"> <span class="EntityInheritedClass">&lt;</span> ApplicationController</span></span>
+<p><b>app/controllers/forums_controller.rb</b>
+</p><pre class="twilight"><span class="line-numbers">   1 </span> <span class="Keyword">class</span> <span class="Entity">ForumsController<span class="EntityInheritedClass"> <span class="EntityInheritedClass">&lt;</span> ApplicationController</span></span>
 <span class="line-numbers">   2 </span>   <span class="Keyword">def</span> <span class="Entity">index</span>
 <span class="line-numbers">   3 </span> 
 <span class="line-numbers">   4 </span>   <span class="Keyword">end</span>
@@ -52,12 +84,15 @@
 <span class="line-numbers">   6 </span>   <span class="Keyword">def</span> <span class="Entity">show</span>
 <span class="line-numbers">   7 </span> 
 <span class="line-numbers">   8 </span>   <span class="Keyword">end</span>
-<span class="line-numbers">   9 </span> <span class="Keyword">end</span></pre></p>
+<span class="line-numbers">   9 </span> <span class="Keyword">end</span>
+</pre><p></p>
 
-                <p>These are the two actions we specified. In here we're going to call the find method on our model to collect all the forums and then just the one forum, like this:</p>
+<p>These are the two actions we specified. In here we're going to call
+the find method on our model to collect all the forums and then just
+the one forum, like this:</p>
 
-                <p><b>app/controllers/forums_controller.rb</b>
-                <pre class="twilight"><span class="line-numbers">   1 </span> <span class="Keyword">class</span> <span class="Entity">ForumsController<span class="EntityInheritedClass"> <span class="EntityInheritedClass">&lt;</span> ApplicationController</span></span>
+<p><b>app/controllers/forums_controller.rb</b>
+</p><pre class="twilight"><span class="line-numbers">   1 </span> <span class="Keyword">class</span> <span class="Entity">ForumsController<span class="EntityInheritedClass"> <span class="EntityInheritedClass">&lt;</span> ApplicationController</span></span>
 <span class="line-numbers">   2 </span> 
 <span class="line-numbers">   3 </span>   <span class="Keyword">def</span> <span class="Entity">index</span>
 <span class="line-numbers">   4 </span>     <span class="Variable"><span class="Variable">@</span>forums</span> <span class="Keyword">=</span> <span class="Support">Forum</span>.<span class="Entity">find</span>(<span class="Constant"><span class="Constant">:</span>all</span>)
@@ -67,25 +102,42 @@
 <span class="line-numbers">   8 </span>     <span class="Variable"><span class="Variable">@</span>forum</span> <span class="Keyword">=</span> <span class="Support">Forum</span>.<span class="Entity">find</span>(params[<span class="Constant"><span class="Constant">:</span>id</span>], <span class="Constant"><span class="Constant">:</span>joins</span> =&gt; <span class="Constant"><span class="Constant">:</span>topics</span>)
 <span class="line-numbers">   9 </span>   <span class="Keyword">end</span>
 <span class="line-numbers">  10 </span> 
-<span class="line-numbers">  11 </span> <span class="Keyword">end</span></pre></p>
+<span class="line-numbers">  11 </span> <span class="Keyword">end</span>
+</pre><p></p>
 
-                <p>The index action now has an instance variable (defined by prefixing the variable name with an @) containing all the forums currently available on our site, none. specifying <span class='term'>:all</span> as the only argument will gather up all the forums for us. This means when we look inside @forums we'll see that it is just an empty array, for now. The show action calls <span class='term'>#find</span> on <span class='term'>Forum</span>, but specifies <span class='term'>params[:id]</span> for the argument rather than all. <span class='term'>params[:id]</span> is the forum we want to view's id.</p>
+<p>The index action now has an instance variable (defined by prefixing
+the variable name with an @) containing all the forums currently
+available on our site, none. specifying <span class="term">:all</span>
+as the only argument will gather up all the forums for us. This means
+when we look inside @forums we'll see that it is just an empty array,
+for now. The show action calls <span class="term">#find</span> on <span class="term">Forum</span>, but specifies <span class="term">params[:id]</span> for the argument rather than all. <span class="term">params[:id]</span> is the forum we want to view's id.</p>
 
-                <p><span class='term'>params</span> is a HashWithIndifferentAccess object that is passed to each request and because it's a HashWithIndifferentAccess it won't matter if you access the keys by using symbols, such as in <span class='term'>params[:id]</span>, or as in <span class='term'>params["id"]</span>. It always has two keys defined in it, and those are the current controller and action, accessed by <span class='term'>params[:controller]</span> and <span class='term'>params[:action]</span> respectively. Anything passed in a request, such as the data from a form, will wind up in the params hash.</p>
+<p><span class="term">params</span> is a HashWithIndifferentAccess
+object that is passed to each request and because it's a
+HashWithIndifferentAccess it won't matter if you access the keys by
+using symbols, such as in <span class="term">params[:id]</span>, or as in <span class="term">params["id"]</span>. It always has two keys defined in it, and those are the current controller and action, accessed by <span class="term">params[:controller]</span> and <span class="term">params[:action]</span> respectively. Anything passed in a request, such as the data from a form, will wind up in the params hash.</p>
 
-                <p>The Admin namespaced classes inherit from <span class='term'>Admin::ApplicationController</span>, and currently we don't have this class available to us. The reason why we inherit from <span class='term'>Admin::ApplicationController</span> is because we may want to define admin-specific things inside <span class='term'>Admin::ApplicationController</span> that we don't want defined within the whole application's <span class='term'>ApplicationController</span>. We'll create <span class='term'>Admin::ApplicationController</span> now.</p>
+<p>The Admin namespaced classes inherit from <span class="term">Admin::ApplicationController</span>, and currently we don't have this class available to us. The reason why we inherit from <span class="term">Admin::ApplicationController</span> is because we may want to define admin-specific things inside <span class="term">Admin::ApplicationController</span> that we don't want defined within the whole application's <span class="term">ApplicationController</span>. We'll create <span class="term">Admin::ApplicationController</span> now.</p>
 
-                <p><b>app/controllers/admin/application_controller.rb</b>
-                <pre class="twilight"><span class="line-numbers">   1 </span> <span class="Keyword">class</span> <span class="Entity">Admin::ApplicationController<span class="EntityInheritedClass"> <span class="EntityInheritedClass">&lt;</span> ApplicationController</span></span>
+<p><b>app/controllers/admin/application_controller.rb</b>
+</p><pre class="twilight"><span class="line-numbers">   1 </span> <span class="Keyword">class</span> <span class="Entity">Admin::ApplicationController<span class="EntityInheritedClass"> <span class="EntityInheritedClass">&lt;</span> ApplicationController</span></span>
 <span class="line-numbers">   2 </span>   <span class="SupportFunction">before_filter</span> <span class="Constant"><span class="Constant">:</span>login_required</span>
-<span class="line-numbers">   3 </span> <span class="Keyword">end</span></pre></p>
+<span class="line-numbers">   3 </span> <span class="Keyword">end</span>
+</pre><p></p>
 
-                <p>We inherit from <span class='term'>ApplicationController</span> so that we can inherit any application-specific settings, variables or methods. We want to make sure users are logged in when accessing any action in any controller that inherits from here, so we call the method <span class='term'>login_required</span> by using a before_filter. This method is supplied to us by the AuthenticatedSystem module (<em>lib/authenticated_system.rb: line #[number]</em>) that came with restful authentication.</p>
+<p>We inherit from <span class="term">ApplicationController</span> so
+that we can inherit any application-specific settings, variables or
+methods. We want to make sure users are logged in when accessing any
+action in any controller that inherits from here, so we call the method
+<span class="term">login_required</span> by using a before_filter. This method is supplied to us by the AuthenticatedSystem module (<em>lib/authenticated_system.rb: line #[number]</em>) that came with restful authentication.</p>
 
-                <p>Now we'll open up the <span class='term'>admin</span> directory inside our Controllers in the project window and edit the forums_controller.rb inside of this, which you should make look like this:</p>
+<p>Now we'll open up the <span class="term">admin</span> directory
+inside our Controllers in the project window and edit the
+forums_controller.rb inside of this, which you should make look like
+this:</p>
 
-                <p><b>app/controllers/admin/forums_controller.rb</b>
-                <pre class="twilight"><span class="line-numbers">   1 </span> <span class="Keyword">class</span> <span class="Entity">Admin::ForumsController<span class="EntityInheritedClass"> <span class="EntityInheritedClass">&lt;</span> Admin::ApplicationController</span></span>
+<p><b>app/controllers/admin/forums_controller.rb</b>
+</p><pre class="twilight"><span class="line-numbers">   1 </span> <span class="Keyword">class</span> <span class="Entity">Admin::ForumsController<span class="EntityInheritedClass"> <span class="EntityInheritedClass">&lt;</span> Admin::ApplicationController</span></span>
 <span class="line-numbers">   2 </span>   <span class="SupportFunction">before_filter</span> <span class="Constant"><span class="Constant">:</span>store_location</span>, <span class="Constant"><span class="Constant">:</span>only</span> =&gt; [<span class="Constant"><span class="Constant">:</span>new</span>, <span class="Constant"><span class="Constant">:</span>edit</span>]
 <span class="line-numbers">   3 </span> 
 <span class="line-numbers">   4 </span>   <span class="Keyword">def</span> <span class="Entity">new</span>
@@ -95,11 +147,11 @@
 <span class="line-numbers">   8 </span>   <span class="Keyword">def</span> <span class="Entity">create</span>
 <span class="line-numbers">   9 </span>     <span class="Variable"><span class="Variable">@</span>forum</span> <span class="Keyword">=</span> <span class="Support">Forum</span>.<span class="Entity">new</span>(params[<span class="Constant"><span class="Constant">:</span>forum</span>])
 <span class="line-numbers">  10 </span>     <span class="Keyword">if</span> <span class="Variable"><span class="Variable">@</span>forum</span>.<span class="Entity">save</span>
-<span class="line-numbers">  11 </span>       flash[<span class="Constant"><span class="Constant">:</span>success</span>] <span class="Keyword">=</span> <span class="String"><span class="String">&quot;</span>A forum has been added successfully.<span class="String">&quot;</span></span>
+<span class="line-numbers">  11 </span>       flash[<span class="Constant"><span class="Constant">:</span>success</span>] <span class="Keyword">=</span> <span class="String"><span class="String">"</span>A forum has been added successfully.<span class="String">"</span></span>
 <span class="line-numbers">  12 </span>       redirect_back_or_default admin_forums_path
 <span class="line-numbers">  13 </span>     <span class="Keyword">else</span>
-<span class="line-numbers">  14 </span>       flash[<span class="Constant"><span class="Constant">:</span>failure</span>] <span class="Keyword">=</span> <span class="String"><span class="String">&quot;</span>A forum could not be added.<span class="String">&quot;</span></span>
-<span class="line-numbers">  15 </span>       <span class="SupportFunction">render</span> <span class="Constant"><span class="Constant">:</span>action</span> =&gt; <span class="String"><span class="String">&quot;</span>new<span class="String">&quot;</span></span>
+<span class="line-numbers">  14 </span>       flash[<span class="Constant"><span class="Constant">:</span>failure</span>] <span class="Keyword">=</span> <span class="String"><span class="String">"</span>A forum could not be added.<span class="String">"</span></span>
+<span class="line-numbers">  15 </span>       <span class="SupportFunction">render</span> <span class="Constant"><span class="Constant">:</span>action</span> =&gt; <span class="String"><span class="String">"</span>new<span class="String">"</span></span>
 <span class="line-numbers">  16 </span>     <span class="Keyword">end</span>
 <span class="line-numbers">  17 </span>   <span class="Keyword">end</span>
 <span class="line-numbers">  18 </span> 
@@ -112,11 +164,11 @@
 <span class="line-numbers">  25 </span>   <span class="Keyword">def</span> <span class="Entity">update</span>
 <span class="line-numbers">  26 </span>     <span class="Variable"><span class="Variable">@</span>forum</span> <span class="Keyword">=</span> <span class="Support">Forum</span>.<span class="Entity">find</span>(params[<span class="Constant"><span class="Constant">:</span>id</span>])
 <span class="line-numbers">  27 </span>     <span class="Keyword">if</span> <span class="Variable"><span class="Variable">@</span>forum</span>.<span class="Entity">update_attributes</span>(params[<span class="Constant"><span class="Constant">:</span>forum</span>])
-<span class="line-numbers">  28 </span>       flash[<span class="Constant"><span class="Constant">:</span>success</span>] <span class="Keyword">=</span> <span class="String"><span class="String">&quot;</span>The forum has been updated successfully.<span class="String">&quot;</span></span>
+<span class="line-numbers">  28 </span>       flash[<span class="Constant"><span class="Constant">:</span>success</span>] <span class="Keyword">=</span> <span class="String"><span class="String">"</span>The forum has been updated successfully.<span class="String">"</span></span>
 <span class="line-numbers">  29 </span>       redirect_back_or_default admin_forums_path
 <span class="line-numbers">  30 </span>     <span class="Keyword">else</span>
-<span class="line-numbers">  31 </span>       flash[<span class="Constant"><span class="Constant">:</span>failure</span>] <span class="Keyword">=</span> <span class="String"><span class="String">&quot;</span>The forum could not be updated.<span class="String">&quot;</span></span>
-<span class="line-numbers">  32 </span>       <span class="SupportFunction">render</span> <span class="Constant"><span class="Constant">:</span>action</span> =&gt; <span class="String"><span class="String">&quot;</span>edit<span class="String">&quot;</span></span>
+<span class="line-numbers">  31 </span>       flash[<span class="Constant"><span class="Constant">:</span>failure</span>] <span class="Keyword">=</span> <span class="String"><span class="String">"</span>The forum could not be updated.<span class="String">"</span></span>
+<span class="line-numbers">  32 </span>       <span class="SupportFunction">render</span> <span class="Constant"><span class="Constant">:</span>action</span> =&gt; <span class="String"><span class="String">"</span>edit<span class="String">"</span></span>
 <span class="line-numbers">  33 </span>     <span class="Keyword">end</span>
 <span class="line-numbers">  34 </span>     <span class="Keyword">rescue</span> <span class="Support">ActiveRecord</span>::<span class="Entity">RecordNotFound</span>
 <span class="line-numbers">  35 </span>       not_found
@@ -125,7 +177,7 @@
 <span class="line-numbers">  38 </span>   <span class="Keyword">def</span> <span class="Entity">destroy</span>
 <span class="line-numbers">  39 </span>     <span class="Variable"><span class="Variable">@</span>forum</span> <span class="Keyword">=</span> <span class="Support">Forum</span>.<span class="Entity">find</span>(params[<span class="Constant"><span class="Constant">:</span>id</span>])
 <span class="line-numbers">  40 </span>     <span class="Variable"><span class="Variable">@</span>forum</span>.<span class="Entity">destroy</span>
-<span class="line-numbers">  41 </span>     flash[<span class="Constant"><span class="Constant">:</span>success</span>] <span class="Keyword">=</span> <span class="String"><span class="String">&quot;</span>The selected forum has been deleted.<span class="String">&quot;</span></span>
+<span class="line-numbers">  41 </span>     flash[<span class="Constant"><span class="Constant">:</span>success</span>] <span class="Keyword">=</span> <span class="String"><span class="String">"</span>The selected forum has been deleted.<span class="String">"</span></span>
 <span class="line-numbers">  42 </span>     <span class="Keyword">rescue</span> <span class="Support">ActiveRecord</span>::<span class="Entity">RecordNotFound</span>
 <span class="line-numbers">  43 </span>       not_found
 <span class="line-numbers">  44 </span>   <span class="Keyword">end</span>
@@ -133,33 +185,66 @@
 <span class="line-numbers">  46 </span>   <span class="Keyword">private</span>
 <span class="line-numbers">  47 </span> 
 <span class="line-numbers">  48 </span>     <span class="Keyword">def</span> <span class="Entity">not_found</span>
-<span class="line-numbers">  49 </span>       flash[<span class="Constant"><span class="Constant">:</span>error</span>] <span class="Keyword">=</span> <span class="String"><span class="String">&quot;</span>The forum you were looking could not be found!<span class="String">&quot;</span></span>
+<span class="line-numbers">  49 </span>       flash[<span class="Constant"><span class="Constant">:</span>error</span>] <span class="Keyword">=</span> <span class="String"><span class="String">"</span>The forum you were looking could not be found!<span class="String">"</span></span>
 <span class="line-numbers">  50 </span>       redirect_back_or_default admin_forums_path
 <span class="line-numbers">  51 </span>     <span class="Keyword">end</span>
-<span class="line-numbers">  52 </span> <span class="Keyword">end</span></pre></p>
+<span class="line-numbers">  52 </span> <span class="Keyword">end</span>
+</pre><p></p>
 
-                <p>This is a huge chunk of code, and defines all our administrative actions for just the forums of our site. We'll go through each action one by one.</p>
+<p>This is a huge chunk of code, and defines all our administrative
+actions for just the forums of our site. We'll go through each action
+one by one.</p>
 
-                <p>The first line we call <span class='term'>#before_filter</span>, which will run a method before calling the action; <span class='term'>#store_location</span> in this instance. <span class='term'>#store_location</span> will store the current location of a user so that we can reference that position when we want to go back to it.</p>
+<p>The first line we call <span class="term">#before_filter</span>, which will run a method before calling the action; <span class="term">#store_location</span> in this instance. <span class="term">#store_location</span> will store the current location of a user so that we can reference that position when we want to go back to it.</p>
 
-                <p>The new action, <span class='term'>def new</span> defines a new instance variable <span class='term'>@forum</span> by calling <span class='term'>Forum.new</span>. Calling new on a model class without specifying arguments will give you a new object of that class, with all the defaults set on the fields. We've done this so we can create a new forum object for our form, and also so our <span class='term'>form_for</span> method call knows where to point to to get to the create action.</p>
+<p>The new action, <span class="term">def new</span> defines a new instance variable <span class="term">@forum</span> by calling <span class="term">Forum.new</span>.
+Calling new on a model class without specifying arguments will give you
+a new object of that class, with all the defaults set on the fields.
+We've done this so we can create a new forum object for our form, and
+also so our <span class="term">form_for</span> method call knows where to point to to get to the create action.</p>
 
-                <p>The create action defines a new instance variable called <span class='term'>@forum</span>, but calls <span class='term'>Forum.new</span> with one argument, <span class='term'>params[:forum]</span>. <span class='term'>params[:forum]</span> is what has been passed from our new form to this action, and should include a title and a description. Calling save on the <span class='term'>@forum</span> object will return either true or false; true if it passes the validations we set on the model, false if it doesn't. If it returns true then it will set <span class='term'>flash[:success]</span> to have a message informing the user that a forum has been created. <span class='term'>flash</span> is another <span class='term'>HashWithIndifferentAccess</span> object and is mainly used for one-off messages, such as what we're doing here. After it sets the flash it will redirect us back to our last stored location, or /admin/forums if there isn't a stored location. </p>
+<p>The create action defines a new instance variable called <span class="term">@forum</span>, but calls <span class="term">Forum.new</span> with one argument, <span class="term">params[:forum]</span>. <span class="term">params[:forum]</span> is what has been passed from our new form to this action, and should include a title and a description. Calling save on the <span class="term">@forum</span>
+object will return either true or false; true if it passes the
+validations we set on the model, false if it doesn't. If it returns
+true then it will set <span class="term">flash[:success]</span> to have a message informing the user that a forum has been created. <span class="term">flash</span> is another <span class="term">HashWithIndifferentAccess</span>
+object and is mainly used for one-off messages, such as what we're
+doing here. After it sets the flash it will redirect us back to our
+last stored location, or /admin/forums if there isn't a stored
+location. </p>
 
-                <p><div align='center'><div class='quote'>If we were guaranteed that the save would always return true, we could use <span class='term'>#create</span> instead. <span class='term'>#create</span> initializes a new object and then saves it, returning either a valid object, or the same object. Another method we could use here if we have a guaranteed success is <span class='term'>#create!</span>. This is the bigger, meaner brother of <span class='term'>create</span>, and will raise an exception (either <span class='term'>ActiveRecord::RecordNotSaved</span> or <span class='term'>ActiveRecord::RecordInvalid</span>) and means we would have to rescue that exception.</div></div></p>
+<p></p><div align="center"><div class="quote">If we were guaranteed that the save would always return true, we could use <span class="term">#create</span> instead. <span class="term">#create</span>
+initializes a new object and then saves it, returning either a valid
+object, or the same object. Another method we could use here if we have
+a guaranteed success is <span class="term">#create!</span>. This is the bigger, meaner brother of <span class="term">create</span>, and will raise an exception (either <span class="term">ActiveRecord::RecordNotSaved</span> or <span class="term">ActiveRecord::RecordInvalid</span>) and means we would have to rescue that exception.</div></div><p></p>
 
-                <p>The edit action defines a new instance variable called <span class='term'>@forum</span>, by calling find on the <span class='term'>Forum</span> class with <span class='term'>params[:id]</span> as its argument. This works much in the same way the new action does, providing us with a form to edit the data and then send it to the update action. It will raise an error if it cannot find the forum we're after.</p>
+<p>The edit action defines a new instance variable called <span class="term">@forum</span>, by calling find on the <span class="term">Forum</span> class with <span class="term">params[:id]</span>
+as its argument. This works much in the same way the new action does,
+providing us with a form to edit the data and then send it to the
+update action. It will raise an error if it cannot find the forum we're
+after.</p>
 
-                <p>The update action again defines a new instance variable called <span class='term'>@forum</span> exactly the same way the edit action does. The difference here is that we call <span class='term'>#update_attributes</span> on this object which works just like a save call, but we pass in the new attributes in a hash to it, <span class='term'>params[:forum]</span>. If <span class='term'>#update_attributes</span> likes what we gave it, then it'll return true in which case it'll notify us that the forum has been updated successfully and will redirect us back to admin/forums, if there isn't a stored location. It will also raise an error if it cannot find the forum we're after.</p>
+<p>The update action again defines a new instance variable called <span class="term">@forum</span> exactly the same way the edit action does. The difference here is that we call <span class="term">#update_attributes</span> on this object which works just like a save call, but we pass in the new attributes in a hash to it, <span class="term">params[:forum]</span>. If <span class="term">#update_attributes</span>
+likes what we gave it, then it'll return true in which case it'll
+notify us that the forum has been updated successfully and will
+redirect us back to admin/forums, if there isn't a stored location. It
+will also raise an error if it cannot find the forum we're after.</p>
 
-                <p>The destroy action. We get an existing forum object from the database and then call destroy on it. What this does is call <span class='term'>DELETE FROM `forums` WHERE `id` = '[the id we passed in]'</span> on the database, removing the record for that forum. It will also raise an error if it cannot find the forum we're after.</p>
+<p>The destroy action. We get an existing forum object from the database and then call destroy on it. What this does is call <span class="term">DELETE FROM `forums` WHERE `id` = '[the id we passed in]'</span> on the database, removing the record for that forum. It will also raise an error if it cannot find the forum we're after.</p>
 
-                <p>The last action we've specified there we've put <span class='term'>private</span> above it. This means that if a user tried going to /admin/forums/not_found, the ForumsController class would play dumb and tell the user there isn't such an action, even though there is. <span class='term'>not_found</span> is called when we rescue the ActiveRecord::RecordNotFound errors in the edit, update and destroy actions and just informs the user that what they're looking for could not be found.</p>
+<p>The last action we've specified there we've put <span class="term">private</span>
+above it. This means that if a user tried going to
+/admin/forums/not_found, the ForumsController class would play dumb and
+tell the user there isn't such an action, even though there is. <span class="term">not_found</span>
+is called when we rescue the ActiveRecord::RecordNotFound errors in the
+edit, update and destroy actions and just informs the user that what
+they're looking for could not be found.</p>
 
-                <p>The next controller we create is going to be the topics controller. This going to be much the same of the forums controller, but the create action has a little twist. Generate the topics controllers by doing <span class='term'>script/generate controller topics</span>.</p>
+<p>The next controller we create is going to be the topics controller.
+This going to be much the same of the forums controller, but the create
+action has a little twist. Generate the topics controllers by doing <span class="term">script/generate controller topics</span>.</p>
 
-                <p><b>app/controllers/topics_controller.rb</b>
-<pre class="twilight"><span class="line-numbers">   1 </span> <span class="Keyword">class</span> <span class="Entity">TopicsController<span class="EntityInheritedClass"> <span class="EntityInheritedClass">&lt;</span> ApplicationController</span></span>
+<p><b>app/controllers/topics_controller.rb</b>
+</p><pre class="twilight"><span class="line-numbers">   1 </span> <span class="Keyword">class</span> <span class="Entity">TopicsController<span class="EntityInheritedClass"> <span class="EntityInheritedClass">&lt;</span> ApplicationController</span></span>
 <span class="line-numbers">   2 </span>   <span class="SupportFunction">before_filter</span> <span class="Constant"><span class="Constant">:</span>login_required</span>, <span class="Constant"><span class="Constant">:</span>except</span> =&gt; [<span class="Constant"><span class="Constant">:</span>index</span>, <span class="Constant"><span class="Constant">:</span>show</span>]
 <span class="line-numbers">   3 </span>   <span class="SupportFunction">before_filter</span> <span class="Constant"><span class="Constant">:</span>store_location</span>, <span class="Constant"><span class="Constant">:</span>only</span> =&gt; [<span class="Constant"><span class="Constant">:</span>show</span>, <span class="Constant"><span class="Constant">:</span>new</span>, <span class="Constant"><span class="Constant">:</span>edit</span>]
 <span class="line-numbers">   4 </span>   <span class="SupportFunction">before_filter</span> <span class="Constant"><span class="Constant">:</span>find_forum</span>
@@ -183,11 +268,11 @@
 <span class="line-numbers">  22 </span>     <span class="Variable"><span class="Variable">@</span>topic</span> <span class="Keyword">=</span> <span class="Variable"><span class="Variable">@</span>forum</span>.<span class="Entity">topics</span>.<span class="Entity">build</span>(params[<span class="Constant"><span class="Constant">:</span>topic</span>])
 <span class="line-numbers">  23 </span>     <span class="Variable"><span class="Variable">@</span>topic</span>.<span class="Entity">posts</span>.<span class="Entity">build</span>(params[<span class="Constant"><span class="Constant">:</span>post</span>])
 <span class="line-numbers">  24 </span>     <span class="Keyword">if</span> <span class="Variable"><span class="Variable">@</span>topic</span>.<span class="Entity">save</span>
-<span class="line-numbers">  25 </span>       flash[<span class="Constant"><span class="Constant">:</span>notice</span>] <span class="Keyword">=</span> <span class="String"><span class="String">&quot;</span>Topic has been created.<span class="String">&quot;</span></span>
+<span class="line-numbers">  25 </span>       flash[<span class="Constant"><span class="Constant">:</span>notice</span>] <span class="Keyword">=</span> <span class="String"><span class="String">"</span>Topic has been created.<span class="String">"</span></span>
 <span class="line-numbers">  26 </span>       <span class="SupportFunction">redirect_to</span> <span class="Entity">forum_topic_path</span>(<span class="Variable"><span class="Variable">@</span>forum</span>, <span class="Variable"><span class="Variable">@</span>topic</span>)
 <span class="line-numbers">  27 </span>     <span class="Keyword">else</span>
-<span class="line-numbers">  28 </span>       flash[<span class="Constant"><span class="Constant">:</span>error</span>] <span class="Keyword">=</span> <span class="String"><span class="String">&quot;</span>Topic could not be created.<span class="String">&quot;</span></span>
-<span class="line-numbers">  29 </span>       <span class="SupportFunction">render</span> <span class="Constant"><span class="Constant">:</span>action</span> =&gt; <span class="String"><span class="String">&quot;</span>new<span class="String">&quot;</span></span>
+<span class="line-numbers">  28 </span>       flash[<span class="Constant"><span class="Constant">:</span>error</span>] <span class="Keyword">=</span> <span class="String"><span class="String">"</span>Topic could not be created.<span class="String">"</span></span>
+<span class="line-numbers">  29 </span>       <span class="SupportFunction">render</span> <span class="Constant"><span class="Constant">:</span>action</span> =&gt; <span class="String"><span class="String">"</span>new<span class="String">"</span></span>
 <span class="line-numbers">  30 </span>     <span class="Keyword">end</span>
 <span class="line-numbers">  31 </span>   <span class="Keyword">end</span>
 <span class="line-numbers">  32 </span> 
@@ -202,11 +287,11 @@
 <span class="line-numbers">  41 </span>     <span class="Variable"><span class="Variable">@</span>topic</span> <span class="Keyword">=</span> <span class="Variable"><span class="Variable">@</span>forum</span>.<span class="Entity">topics</span>.<span class="Entity">find</span>(params[<span class="Constant"><span class="Constant">:</span>id</span>])
 <span class="line-numbers">  42 </span>     check_ownership
 <span class="line-numbers">  43 </span>     <span class="Keyword">if</span> <span class="Variable"><span class="Variable">@</span>topic</span>.<span class="Entity">update_attributes</span>(params[<span class="Constant"><span class="Constant">:</span>topic</span>])
-<span class="line-numbers">  44 </span>       flash[<span class="Constant"><span class="Constant">:</span>notice</span>] <span class="Keyword">=</span> <span class="String"><span class="String">&quot;</span>Topic has been updated.<span class="String">&quot;</span></span>
+<span class="line-numbers">  44 </span>       flash[<span class="Constant"><span class="Constant">:</span>notice</span>] <span class="Keyword">=</span> <span class="String"><span class="String">"</span>Topic has been updated.<span class="String">"</span></span>
 <span class="line-numbers">  45 </span>       <span class="SupportFunction">redirect_to</span> <span class="Entity">forum_topic_path</span>(<span class="Variable"><span class="Variable">@</span>forum</span>, <span class="Variable"><span class="Variable">@</span>topic</span>)
 <span class="line-numbers">  46 </span>     <span class="Keyword">else</span>
-<span class="line-numbers">  47 </span>       flash[<span class="Constant"><span class="Constant">:</span>error</span>] <span class="Keyword">=</span> <span class="String"><span class="String">&quot;</span>Topic could not be updated.<span class="String">&quot;</span></span>
-<span class="line-numbers">  48 </span>       <span class="SupportFunction">render</span> <span class="Constant"><span class="Constant">:</span>action</span> =&gt; <span class="String"><span class="String">&quot;</span>edit<span class="String">&quot;</span></span>
+<span class="line-numbers">  47 </span>       flash[<span class="Constant"><span class="Constant">:</span>error</span>] <span class="Keyword">=</span> <span class="String"><span class="String">"</span>Topic could not be updated.<span class="String">"</span></span>
+<span class="line-numbers">  48 </span>       <span class="SupportFunction">render</span> <span class="Constant"><span class="Constant">:</span>action</span> =&gt; <span class="String"><span class="String">"</span>edit<span class="String">"</span></span>
 <span class="line-numbers">  49 </span>     <span class="Keyword">end</span>
 <span class="line-numbers">  50 </span>   <span class="Keyword">rescue</span> <span class="Support">ActiveRecord</span>::<span class="Entity">RecordNotFound</span>
 <span class="line-numbers">  51 </span>     not_found
@@ -216,18 +301,18 @@
 <span class="line-numbers">  55 </span>     <span class="Variable"><span class="Variable">@</span>topic</span> <span class="Keyword">=</span> <span class="Variable"><span class="Variable">@</span>forum</span>.<span class="Entity">topics</span>.<span class="Entity">find</span>(params[<span class="Constant"><span class="Constant">:</span>id</span>])
 <span class="line-numbers">  56 </span>     check_ownership
 <span class="line-numbers">  57 </span>     <span class="Variable"><span class="Variable">@</span>topic</span>.<span class="Entity">destroy</span>
-<span class="line-numbers">  58 </span>     flash[<span class="Constant"><span class="Constant">:</span>notice</span>] <span class="Keyword">=</span> <span class="String"><span class="String">&quot;</span>The selected topic has been deleted.<span class="String">&quot;</span></span>
+<span class="line-numbers">  58 </span>     flash[<span class="Constant"><span class="Constant">:</span>notice</span>] <span class="Keyword">=</span> <span class="String"><span class="String">"</span>The selected topic has been deleted.<span class="String">"</span></span>
 <span class="line-numbers">  59 </span>     <span class="SupportFunction">redirect_to</span> <span class="Entity">forum_path</span>(<span class="Variable"><span class="Variable">@</span>forum</span>)
 <span class="line-numbers">  60 </span>   <span class="Keyword">end</span>
 <span class="line-numbers">  61 </span>     
 <span class="line-numbers">  62 </span>   <span class="Keyword">private</span>
 <span class="line-numbers">  63 </span>     <span class="Keyword">def</span> <span class="Entity">not_found</span>
-<span class="line-numbers">  64 </span>       flash[<span class="Constant"><span class="Constant">:</span>error</span>] <span class="Keyword">=</span> <span class="String"><span class="String">&quot;</span>The topic you were looking for does not exist in this forum.<span class="String">&quot;</span></span>
+<span class="line-numbers">  64 </span>       flash[<span class="Constant"><span class="Constant">:</span>error</span>] <span class="Keyword">=</span> <span class="String"><span class="String">"</span>The topic you were looking for does not exist in this forum.<span class="String">"</span></span>
 <span class="line-numbers">  65 </span>     <span class="Keyword">end</span>
 <span class="line-numbers">  66 </span> 
 <span class="line-numbers">  67 </span>     <span class="Keyword">def</span> <span class="Entity">check_ownership</span>
 <span class="line-numbers">  68 </span>       <span class="Keyword">if</span> <span class="Keyword">!</span><span class="Variable"><span class="Variable">@</span>topic</span>.<span class="Entity">belongs_to?</span>(current_user) <span class="Keyword">&amp;&amp;</span> <span class="Keyword">!</span>admin?
-<span class="line-numbers">  69 </span>         flash[<span class="Constant"><span class="Constant">:</span>error</span>] <span class="Keyword">=</span> <span class="String"><span class="String">&quot;</span>That topic does not belong to you.<span class="String">&quot;</span></span>
+<span class="line-numbers">  69 </span>         flash[<span class="Constant"><span class="Constant">:</span>error</span>] <span class="Keyword">=</span> <span class="String"><span class="String">"</span>That topic does not belong to you.<span class="String">"</span></span>
 <span class="line-numbers">  70 </span>         <span class="SupportFunction">redirect_to</span> <span class="Entity">forum_topic_path</span>(<span class="Variable"><span class="Variable">@</span>forum</span>, <span class="Variable"><span class="Variable">@</span>topic</span>)
 <span class="line-numbers">  71 </span>       <span class="Keyword">end</span>
 <span class="line-numbers">  72 </span>     <span class="Keyword">end</span>
@@ -235,87 +320,170 @@
 <span class="line-numbers">  74 </span>     <span class="Keyword">def</span> <span class="Entity">find_forum</span>
 <span class="line-numbers">  75 </span>       <span class="Variable"><span class="Variable">@</span>forum</span> <span class="Keyword">=</span> <span class="Support">Forum</span>.<span class="Entity">find</span>(params[<span class="Constant"><span class="Constant">:</span>forum_id</span>], <span class="Constant"><span class="Constant">:</span>joins</span> =&gt; <span class="Constant"><span class="Constant">:</span>topic</span>) <span class="Keyword">if</span> params[<span class="Constant"><span class="Constant">:</span>forum_id</span>]
 <span class="line-numbers">  76 </span>     <span class="Keyword">end</span>
-<span class="line-numbers">  77 </span> <span class="Keyword">end</span></pre></p>
+<span class="line-numbers">  77 </span> <span class="Keyword">end</span>
+</pre><p></p>
 
-                <p>Another large amount of code, but most of it you should recognise from the forums controller. The first few lines in this controller make the controller ensure that the user is logged in before proceeding with the action. We used <span class='term'>login_required</span> in our <span class='term'>Admin::ApplicationController</span> class to do the same thing. We store the location of a few important actions here, just like in the forums controller. The final <span class='term'>before_filter</span> does something new. We've defined a method right at the bottom of <em>app/controllers/topics_controller.rb</em> which is called <span class='term'>find_forum</span>. This method will find us a forum and <b>all</b> of the relevant topics (indicated by the <span class='term'>:joins => :topic</span>), providing there's a forum_id specified. The joins code will change the find statement from simply <span class='term'>select * from forums where id = '1'</span> into a slightly larger SQL query of <span class='term'>SELECT `forums`.* FROM `forums` INNER JOIN `topics` ON topics.forum_id = forums.id WHERE (`forums`.`id` = 1)</span>. The bonus of using this join is that we gather all information about this forum and its topics in a single query. Even though right now the forum site isn't going to be the most highly-trafficked site on the internet, it's handy to know this so when you do end up working on a project of a larger scale you know how to optomise and it's "in-built" in your mind.</p>
+<p>Another large amount of code, but most of it you should recognise
+from the forums controller. The first few lines in this controller make
+the controller ensure that the user is logged in before proceeding with
+the action. We used <span class="term">login_required</span> in our <span class="term">Admin::ApplicationController</span>
+class to do the same thing. We store the location of a few important
+actions here, just like in the forums controller. The final <span class="term">before_filter</span> does something new. We've defined a method right at the bottom of <em>app/controllers/topics_controller.rb</em> which is called <span class="term">find_forum</span>. This method will find us a forum and <b>all</b> of the relevant topics (indicated by the <span class="term">:joins =&gt; :topic</span>), providing there's a forum_id specified. The joins code will change the find statement from simply <span class="term">select * from forums where id = '1'</span> into a slightly larger SQL query of <span class="term">SELECT `forums`.* FROM `forums` INNER JOIN `topics` ON topics.forum_id = forums.id WHERE (`forums`.`id` = 1)</span>.
+The bonus of using this join is that we gather all information about
+this forum and its topics in a single query. Even though right now the
+forum site isn't going to be the most highly-trafficked site on the
+internet, it's handy to know this so when you do end up working on a
+project of a larger scale you know how to optomise and it's "in-built"
+in your mind.</p>
 
-                <p>The first action, the index action, just redirects us to the relevant <span class='term'>forum_path</span> since the index of the topics page would just be a duplicate of the forums show action. </p>
+<p>The first action, the index action, just redirects us to the relevant <span class="term">forum_path</span> since the index of the topics page would just be a duplicate of the forums show action. </p>
 
-                <p>The show action gathers a topic from the relevant forum by doing <span class='term'>@forum.topics.find(params[:id])</span>. You already knew that the topics method came from the fact we defined <span class='term'>has_many :topics</span> in the Forum model, but there was mention earlier that other cool methods came with it. <span class='term'>#find</span> is one of these methods. <span class='term'>#find</span> when called on an association will find all items within the scope of that association instead of searching the entire set. This find, for example, will find all topics for whatever forum was gathered by <span class='term'>#find_forum</span>.</p>
+<p>The show action gathers a topic from the relevant forum by doing <span class="term">@forum.topics.find(params[:id])</span>. You already knew that the topics method came from the fact we defined <span class="term">has_many :topics</span> in the Forum model, but there was mention earlier that other cool methods came with it. <span class="term">#find</span> is one of these methods. <span class="term">#find</span>
+when called on an association will find all items within the scope of
+that association instead of searching the entire set. This find, for
+example, will find all topics for whatever forum was gathered by <span class="term">#find_forum</span>.</p>
 
-                <p>The new action initializes a new topic, again using one of those other cool methods that come with defining an association: <span class='term'>#build</span>. <span class='term'>#build</span> works like the <span class='term'>#new</span>, but you can also pass this an array of attribute hashes to build multiple associated records. Also in this action we define <span class='term'>@post</span> using <span class='term'>#build</span> once more, this time on the not-yet existing association of posts with the brand new topic. </p>
+<p>The new action initializes a new topic, again using one of those other cool methods that come with defining an association: <span class="term">#build</span>. <span class="term">#build</span> works like the <span class="term">#new</span>, but you can also pass this an array of attribute hashes to build multiple associated records. Also in this action we define <span class="term">@post</span> using <span class="term">#build</span> once more, this time on the not-yet existing association of posts with the brand new topic. </p>
 
-                <p><div align='center'><div class='quote'>If we used <span class='term'>#create</span> instead of this last build, Rails would throw us an error:</p>
+<p></p><div align="center"><div class="quote">If we used <span class="term">#create</span> instead of this last build, Rails would throw us an error:<p></p>
 
-                <p><b>ActiveRecord::RecordNotSaved</b></p>
+<p><b>ActiveRecord::RecordNotSaved</b></p>
 
-                <p>You cannot call create unless the parent is saved</p>
+<p>You cannot call create unless the parent is saved</p>
 
-                <p>Just be careful when you're calling create on associations, as this a really big gotcha in Rails.
-                </div></div>
+<p>Just be careful when you're calling create on associations, as this a really big gotcha in Rails.
+</p></div></div> The create action initializes a new topic and related
+post, and then saves the topic. Saving the topic will also save the
+related post. If either the topic or the post is invalid it'll make the
+save return false, and we'll be asked to check the information we
+entered. If the topic and the post is valid, then the save will return
+true and we'll be shown our new topic and new post.<p></p>
 
-                The create action initializes a new topic and related post, and then saves the topic. Saving the topic will also save the related post. If either the topic or the post is invalid it'll make the save return false, and we'll be asked to check the information we entered. If the topic and the post is valid, then the save will return true and we'll be shown our new topic and new post.</p>
+<p>The edit action fetches an existing topic from within the scope of the current forum and will rescue the <span class="term">ActiveRecord::RecordNotSaved</span>
+exception that gets raised if we specify an invalid id. This method
+also checks to see if the current user does not own the topic by
+calling the <span class="term">#belongs_to?</span> (we defined it in
+the Topic model, in the "Database &amp; Models" section) and if the
+user is not an admin. If both methods return false, the <span class="term">!</span>
+before them will turn them both into true, making the if statement pass
+and running the code telling the user that they don't own the topic. If
+the user does own the topic or is an admin it'll carry on rendering the
+edit view. </p>
 
-                <p>The edit action fetches an existing topic from within the scope of the current forum and will rescue the <span class='term'>ActiveRecord::RecordNotSaved</span> exception that gets raised if we specify an invalid id. This method also checks to see if the current user does not own the topic by calling the <span class='term'>#belongs_to?</span> (we defined it in the Topic model, in the "Database & Models" section) and if the user is not an admin. If both methods return false, the <span class='term'>!</span> before them will turn them both into true, making the if statement pass and running the code telling the user that they don't own the topic. If the user does own the topic or is an admin it'll carry on rendering the edit view. </p>
+<p>The update action again fetches an existing topic from within the
+scope of the current forum, checks to see if the user is an admin or
+owns the topic, and calls <span class="term">update_attributes</span>
+on it which will return true or false depending on if the topic is
+valid or not. This action will redirect to the relevant topic.</p>
 
-                <p>The update action again fetches an existing topic from within the scope of the current forum, checks to see if the user is an admin or owns the topic, and calls <span class='term'>update_attributes</span> on it which will return true or false depending on if the topic is valid or not. This action will redirect to the relevant topic.</p>
+<p></p><div align="center">
+<div class="quote"> There's been all this
+talk in this section about things being valid. So how do you check if
+an object is valid, without actually saving it? You can call the <span class="term">#valid?</span>
+method on it which, like save, will return true or false depending on
+if the item is valid (passes all validations) all without saving the
+object. </div>
+</div><p></p>
 
-                <p><div align='center'>
-                  <div class='quote'>
-                    There's been all this talk in this section about things being valid. So how do you check if an object is valid, without actually saving it? You can call the <span class='term'>#valid?</span> method on it which, like save, will return true or false depending on if the item is valid (passes all validations) all without saving the object.
-                  </div>
-                </div></p>
+<p>The destroy action gets a topic, checks once more for ownership or
+admin capabilities, and then destroys it. This action will then
+redirect to the relevant forum.</p>
 
-                <p>The destroy action gets a topic, checks once more for ownership or admin capabilities, and then destroys it. This action will then redirect to the relevant forum.</p>
+<p>The first method in the private section is <span class="term">not_found</span>, which we call when we rescue <span class="term">ActiveRecord::RecordNotFound</span>, this simply sets <span class="term">flash[:error]</span> to be a message telling the user we can't find the topic they're looking for and redirects them to the relevant forum.</p>
 
-                <p>The first method in the private section is <span class='term'>not_found</span>, which we call when we rescue <span class='term'>ActiveRecord::RecordNotFound</span>, this simply sets <span class='term'>flash[:error]</span> to be a message telling the user we can't find the topic they're looking for and redirects them to the relevant forum.</p>
+<p>The next method is <span class="term">check_ownership</span>. This method checks to see if a topic does not <span class="term">belongs_to?</span> a user, and if they're not an admin and if both return true then it also sets a <span class="term">flash[:error]</span> telling the user that the topic they're trying to get to is not theirs, and redirects them to that topic.</p>
 
-                <p>The next method is <span class='term'>check_ownership</span>. This method checks to see if a topic does not <span class='term'>belongs_to?</span> a user, and if they're not an admin and if both return true then it also sets a <span class='term'>flash[:error]</span> telling the user that the topic they're trying to get to is not theirs, and redirects them to that topic.</p>
+<p>The final method is <span class="term">find_forum</span>. Because
+topic resources are nested within forum resources we want to find the
+relevant forum and perform our finds for our topics on that forum.</p>
 
-                <p>The final method is <span class='term'>find_forum</span>. Because topic resources are nested within forum resources we want to find the relevant forum and perform our finds for our topics on that forum.</p>
+<p>The last controller we'll create is our posts controller. This
+controller will allow us to add new posts to topics, edit existing
+posts and remove existing posts. It looks a little like this:</p>
 
-                <p>The last controller we'll create is our posts controller. This controller will allow us to add new posts to topics, edit existing posts and remove existing posts. It looks a little like this:</p>
+<p></p><pre class="twilight"><span class="line-numbers">   1 </span> <span class="Keyword">class</span> <span class="Entity">PostsController<span class="EntityInheritedClass"> <span class="EntityInheritedClass">&lt;</span> ApplicationController</span></span>
+<span class="line-numbers">   2 </span>   <span class="SupportFunction">before_filter</span> <span class="Constant"><span class="Constant">:</span>login_required</span>
+<span class="line-numbers">   3 </span>   <span class="SupportFunction">before_filter</span> <span class="Constant"><span class="Constant">:</span>find_topic</span>
+<span class="line-numbers">   4 </span> 
+<span class="line-numbers">   5 </span>   <span class="Keyword">def</span> <span class="Entity">index</span>
+<span class="line-numbers">   6 </span>     <span class="SupportFunction">redirect_to</span> <span class="Entity">topic_path</span>(<span class="Variable"><span class="Variable">@</span>topic</span>)
+<span class="line-numbers">   7 </span>   <span class="Keyword">end</span>
+<span class="line-numbers">   8 </span> 
+<span class="line-numbers">   9 </span>   <span class="Keyword">def</span> <span class="Entity">show</span>
+<span class="line-numbers">  10 </span>     <span class="Variable"><span class="Variable">@</span>post</span> <span class="Keyword">=</span> <span class="Variable"><span class="Variable">@</span>topic</span>.<span class="Entity">posts</span>.<span class="Entity">find</span>(params[<span class="Constant"><span class="Constant">:</span>id</span>])
+<span class="line-numbers">  11 </span>     respond_to <span class="Keyword">do </span>|<span class="Variable">format</span>|
+<span class="line-numbers">  12 </span>       format.<span class="Entity">html</span>
+<span class="line-numbers">  13 </span>       format.<span class="Entity">js</span>
+<span class="line-numbers">  14 </span>     <span class="Keyword">end</span>
+<span class="line-numbers">  15 </span>     <span class="Keyword">rescue</span> <span class="Support">ActiveRecord</span>::<span class="Entity">RecordNotFound</span>
+<span class="line-numbers">  16 </span>       not_found
+<span class="line-numbers">  17 </span>   <span class="Keyword">end</span>
+<span class="line-numbers">  18 </span> 
+<span class="line-numbers">  19 </span>   <span class="Keyword">def</span> <span class="Entity">new</span>
+<span class="line-numbers">  20 </span>     <span class="Variable"><span class="Variable">@</span>post</span> <span class="Keyword">=</span> <span class="Variable"><span class="Variable">@</span>topic</span>.<span class="Entity">posts</span>.<span class="Entity">new</span>
+<span class="line-numbers">  21 </span>   <span class="Keyword">end</span>
+<span class="line-numbers">  22 </span> 
+<span class="line-numbers">  23 </span>   <span class="Keyword">def</span> <span class="Entity">create</span>
+<span class="line-numbers">  24 </span>     <span class="Variable"><span class="Variable">@</span>post</span> <span class="Keyword">=</span> <span class="Variable"><span class="Variable">@</span>topic</span>.<span class="Entity">posts</span>.<span class="Entity">new</span>(params[<span class="Constant"><span class="Constant">:</span>post</span>])
+<span class="line-numbers">  25 </span>   <span class="Keyword">end</span>
+<span class="line-numbers">  26 </span> 
+<span class="line-numbers">  27 </span>   <span class="Keyword">def</span> <span class="Entity">edit</span>
+<span class="line-numbers">  28 </span>     <span class="Variable"><span class="Variable">@</span>post</span> <span class="Keyword">=</span> <span class="Variable"><span class="Variable">@</span>topic</span>.<span class="Entity">posts</span>.<span class="Entity">find</span>(params[<span class="Constant"><span class="Constant">:</span>id</span>])
+<span class="line-numbers">  29 </span>     <span class="Keyword">rescue</span> <span class="Support">ActiveRecord</span>::<span class="Entity">RecordNotFound</span>
+<span class="line-numbers">  30 </span>       <span class="SupportFunction">render</span> <span class="Constant"><span class="Constant">:</span>action</span> =&gt; <span class="String"><span class="String">"</span>not_found<span class="String">"</span></span>
+<span class="line-numbers">  31 </span>   <span class="Keyword">end</span>
+<span class="line-numbers">  32 </span> 
+<span class="line-numbers">  33 </span>   <span class="Keyword">def</span> <span class="Entity">update</span>
+<span class="line-numbers">  34 </span>     <span class="Variable"><span class="Variable">@</span>post</span> <span class="Keyword">=</span> <span class="Variable"><span class="Variable">@</span>topics</span>.<span class="Entity">posts</span>.<span class="Entity">find</span>(params[<span class="Constant"><span class="Constant">:</span>id</span>])
+<span class="line-numbers">  35 </span>     <span class="Keyword">if</span> <span class="Variable"><span class="Variable">@</span>post</span>.<span class="Entity">update_attributes</span>(params[<span class="Constant"><span class="Constant">:</span>post</span>])
+<span class="line-numbers">  36 </span>       flash[<span class="Constant"><span class="Constant">:</span>notice</span>] <span class="Keyword">=</span> <span class="String"><span class="String">"</span>This post has been updated.<span class="String">"</span></span>
+<span class="line-numbers">  37 </span>     <span class="Keyword">else</span>
+<span class="line-numbers">  38 </span>       flash[<span class="Constant"><span class="Constant">:</span>error</span>] <span class="Keyword">=</span> <span class="String"><span class="String">"</span>This post could not be updated.<span class="String">"</span></span>
+<span class="line-numbers">  39 </span>     <span class="Keyword">end</span>
+<span class="line-numbers">  40 </span>     <span class="Keyword">rescue</span> <span class="Support">ActiveRecord</span>::<span class="Entity">RecordNotFound</span>
+<span class="line-numbers">  41 </span>       not_found
+<span class="line-numbers">  42 </span>   <span class="Keyword">end</span>
+<span class="line-numbers">  43 </span> 
+<span class="line-numbers">  44 </span>   <span class="Keyword">def</span> <span class="Entity">destroy</span>
+<span class="line-numbers">  45 </span>     <span class="Variable"><span class="Variable">@</span>post</span> <span class="Keyword">=</span> <span class="Variable"><span class="Variable">@</span>topic</span>.<span class="Entity">posts</span>.<span class="Entity">find</span>(params[<span class="Constant"><span class="Constant">:</span>id</span>])
+<span class="line-numbers">  46 </span>     <span class="Variable"><span class="Variable">@</span>post</span>.<span class="Entity">destroy</span>
+<span class="line-numbers">  47 </span>     flash[<span class="Constant"><span class="Constant">:</span>notice</span>] <span class="Keyword">=</span> <span class="String"><span class="String">"</span>The selected post has been deleted.<span class="String">"</span></span>
+<span class="line-numbers">  48 </span>   <span class="Keyword">end</span>
+<span class="line-numbers">  49 </span> <span class="Keyword">end</span>
+<span class="line-numbers">  50 </span> 
+<span class="line-numbers">  51 </span> <span class="Keyword">private</span>
+<span class="line-numbers">  52 </span>   <span class="Keyword">def</span> <span class="Entity">not_found</span>
+<span class="line-numbers">  53 </span>     flash[<span class="Constant"><span class="Constant">:</span>error</span>] <span class="Keyword">=</span> <span class="String"><span class="String">"</span>The post you were looking for could not be found.<span class="String">"</span></span>
+<span class="line-numbers">  54 </span>     <span class="SupportFunction">redirect_to</span> <span class="Entity">topic_path</span>(<span class="Variable"><span class="Variable">@</span>topic</span>)
+<span class="line-numbers">  55 </span>   <span class="Keyword">end</span>
+<span class="line-numbers">  56 </span> 
+<span class="line-numbers">  57 </span>   <span class="Keyword">def</span> <span class="Entity">find_topic</span>
+<span class="line-numbers">  58 </span>     <span class="Variable"><span class="Variable">@</span>topic</span> <span class="Keyword">=</span> <span class="Support">Topic</span>.<span class="Entity">find</span>(params[<span class="Constant"><span class="Constant">:</span>topic_id</span>])
+<span class="line-numbers">  59 </span>   <span class="Keyword">end</span>
+</pre><p></p>
 
-<p><pre class="twilight"><span class="line-numbers">   1 </span> 
-<span class="line-numbers">   2 </span> <span class="Keyword">class</span> <span class="Entity">PostsController<span class="EntityInheritedClass"> <span class="EntityInheritedClass">&lt;</span> ApplicationController</span></span>
-<span class="line-numbers">   3 </span>   <span class="SupportFunction">before_filter</span> <span class="Constant"><span class="Constant">:</span>login_required</span>
-<span class="line-numbers">   4 </span>   <span class="SupportFunction">before_filter</span> <span class="Constant"><span class="Constant">:</span>find_topic</span>
-<span class="line-numbers">   5 </span> 
-<span class="line-numbers">   6 </span>   <span class="Keyword">def</span> <span class="Entity">index</span>
-<span class="line-numbers">   7 </span>     <span class="SupportFunction">redirect_to</span> <span class="Entity">topic_path</span>(<span class="Variable"><span class="Variable">@</span>topic</span>)
-<span class="line-numbers">   8 </span>   <span class="Keyword">end</span>
-<span class="line-numbers">   9 </span> 
-<span class="line-numbers">  10 </span>   <span class="Keyword">def</span> <span class="Entity">show</span>
-<span class="line-numbers">  11 </span>     <span class="Variable"><span class="Variable">@</span>post</span> <span class="Keyword">=</span> <span class="Variable"><span class="Variable">@</span>topic</span>.<span class="Entity">posts</span>.<span class="Entity">find</span>(params[<span class="Constant"><span class="Constant">:</span>id</span>])
-<span class="line-numbers">  12 </span>     <span class="Keyword">rescue</span> <span class="Support">ActiveRecord</span>::<span class="Entity">RecordNotFound</span>
-<span class="line-numbers">  13 </span>       not_found
-<span class="line-numbers">  14 </span>   <span class="Keyword">end</span>
-<span class="line-numbers">  15 </span> 
-<span class="line-numbers">  16 </span>   <span class="Keyword">def</span> <span class="Entity">edit</span>
-<span class="line-numbers">  17 </span>     <span class="Variable"><span class="Variable">@</span>post</span> <span class="Keyword">=</span> <span class="Variable"><span class="Variable">@</span>topic</span>.<span class="Entity">posts</span>.<span class="Entity">find</span>(params[<span class="Constant"><span class="Constant">:</span>id</span>])
-<span class="line-numbers">  18 </span>     <span class="Keyword">rescue</span> <span class="Support">ActiveRecord</span>::<span class="Entity">RecordNotFound</span>
-<span class="line-numbers">  19 </span>       not_found
-<span class="line-numbers">  20 </span>   <span class="Keyword">end</span>
-<span class="line-numbers">  21 </span> 
-<span class="line-numbers">  22 </span>   <span class="Keyword">def</span> <span class="Entity">update</span>
-<span class="line-numbers">  23 </span>     <span class="Variable"><span class="Variable">@</span>post</span> <span class="Keyword">=</span> <span class="Variable"><span class="Variable">@</span>topics</span>.<span class="Entity">posts</span>.<span class="Entity">find</span>(params[<span class="Constant"><span class="Constant">:</span>id</span>])
-<span class="line-numbers">  24 </span>     <span class="Keyword">if</span> <span class="Variable"><span class="Variable">@</span>post</span>.<span class="Entity">update_attributes</span>(params[<span class="Constant"><span class="Constant">:</span>post</span>])
-<span class="line-numbers">  25 </span>       flash[<span class="Constant"><span class="Constant">:</span>notice</span>] <span class="Keyword">=</span> <span class="String"><span class="String">&quot;</span>This post has been updated<span class="String">&quot;</span></span>
-<span class="line-numbers">  26 </span> <span class="Keyword">end</span></pre></p>
+<p>A few cool things in here are that we call <span class="term">render :action =&gt; "not_found"</span> rather than calling the <span class="term">not found</span> method itself. You'll find out why we did this in the view page. Another cool thing is we have a <span class="term">respond_to</span> block in the show action, which will render either <em>app/views/posts/show.html.erb</em> or <em>app/views/posts/show.js.erb</em>
+depending on the request type the action receives. If it receives a
+HTML request, like a normal page view, it will render the html version.
+If it receives a JavaScript request, an AJAX request, then it will
+render the js version.</p>
 
-                <p></p>
-                <br><br>
+<p>The rest of the controller is pretty standard, so let's move onto the views for these controllers. </p>
 
-                <span id='fr'><a href="view-introduction.html">View Introduction &raquo;</a></span>
-                <span id='fl'><a href="routing-introduction.html">&laquo; Routing Introduction</a></span>
-                
-            
-              </td>
-              <td id="right">&nbsp;</td>
-            </tr>
-            <tr><td colspan="3" id="bottom">&nbsp;</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </body>
-  </html>
+<p></p>
+<br><br>
+
+<a href="http://localhost:3000/guides/how-to-create-a-forum/pages/5/edit">Edit Page</a>
+
+<span id="fr"><a href="http://localhost:3000/guides/how-to-create-a-forum/pages/views">Views »</a></span>
+<span id="fl"><a href="http://localhost:3000/guides/how-to-create-a-forum/pages/routing-introduction">« Routing Introduction</a></span>
+
+</td>
+<td id="right">&nbsp;</td>
+</tr>
+<tr><td colspan="3" id="bottom">&nbsp;</td></tr>
+</tbody>
+</table>
+</div>
+</body>
+</html>
